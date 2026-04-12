@@ -150,11 +150,7 @@ class Browser(ABC):  # noqa: PLR0904
             You are supposed to use this method only if you want to connect to a browser
             that is already running.
         """
-        logger.info(f'Connecting to browser via WebSocket: {ws_address}')
-        await self._setup_ws_address(ws_address)
-        tabs = await self.get_opened_tabs()
-        logger.info(f'Connected. Tabs available: {len(tabs)}')
-        return tabs[0]
+        pass
 
     async def start(self, headless: bool = False) -> Tab:
         """
@@ -245,27 +241,7 @@ class Browser(ABC):  # noqa: PLR0904
         Returns:
             Browser context ID for use with other methods.
         """
-        # If proxy_server contains credentials, strip them and store per-context auth
-        sanitized_proxy = proxy_server
-        extracted_auth: Optional[tuple[str, str]] = None
-        if proxy_server:
-            sanitized_proxy, extracted_auth = self._sanitize_proxy_and_extract_auth(proxy_server)
-            logger.debug(
-                f'Creating browser context with proxy: {sanitized_proxy}'
-                f'(credentials provided={bool(extracted_auth)})'
-            )
-
-        response: CreateBrowserContextResponse = await self._execute_command(
-            TargetCommands.create_browser_context(
-                proxy_server=sanitized_proxy,
-                proxy_bypass_list=proxy_bypass_list,
-            )
-        )
-        context_id = response['result']['browserContextId']
-        if extracted_auth:
-            self._context_proxy_auth[context_id] = extracted_auth
-        logger.info(f'Created browser context: {context_id}')
-        return context_id
+        pass
 
     async def delete_browser_context(self, browser_context_id: str):
         """
@@ -277,18 +253,11 @@ class Browser(ABC):  # noqa: PLR0904
         Note:
             Closes all associated tabs immediately.
         """
-        logger.info(f'Deleting browser context: {browser_context_id}')
-        return await self._execute_command(
-            TargetCommands.dispose_browser_context(browser_context_id)
-        )
+        pass
 
     async def get_browser_contexts(self) -> list[str]:
         """Get all browser context IDs including the default context."""
-        response: GetBrowserContextsResponse = await self._execute_command(
-            TargetCommands.get_browser_contexts()
-        )
-        logger.debug(f'Fetched {len(response["result"]["browserContextIds"])} browser contexts')
-        return response['result']['browserContextIds']
+        pass
 
     async def new_tab(self, url: str = '', browser_context_id: Optional[str] = None) -> Tab:
         """
@@ -301,21 +270,7 @@ class Browser(ABC):  # noqa: PLR0904
         Returns:
             Tab instance for page navigation and element interaction.
         """
-        logger.info(f'Creating new tab (context={browser_context_id})')
-        response: CreateTargetResponse = await self._execute_command(
-            TargetCommands.create_target(
-                browser_context_id=browser_context_id,
-            )
-        )
-        target_id = response['result']['targetId']
-        tab = Tab(self, **self._get_tab_kwargs(target_id, browser_context_id))
-        self._tabs_opened[target_id] = tab
-        await self._apply_user_agent_override(tab)
-        await self._setup_context_proxy_auth_for_tab(tab, browser_context_id)
-        if url:
-            await tab.go_to(url)
-        logger.info(f'New tab created: {target_id}')
-        return tab
+        pass
 
     async def get_targets(self) -> list[TargetInfo]:
         """
@@ -340,44 +295,14 @@ class Browser(ABC):  # noqa: PLR0904
         Returns:
             List of Tab instances. The last tab is the most recent one.
         """
-        targets = await self.get_targets()
-        valid_tab_targets = [
-            target
-            for target in targets
-            if target['type'] == 'page' and 'extension' not in target['url']
-        ]
-        all_target_ids = [target['targetId'] for target in valid_tab_targets]
-        existing_target_ids = list(self._tabs_opened.keys())
-        remaining_target_ids = [
-            target_id for target_id in all_target_ids if target_id not in existing_target_ids
-        ]
-        existing_tabs = [self._tabs_opened[target_id] for target_id in existing_target_ids]
-        new_tabs = []
-        for target_id in reversed(remaining_target_ids):
-            tab = Tab(self, **self._get_tab_kwargs(target_id))
-            await self._apply_user_agent_override(tab)
-            new_tabs.append(tab)
-        self._tabs_opened.update(dict(zip(remaining_target_ids, new_tabs)))
-        logger.debug(
-            f'Opened tabs resolved: existing={len(existing_tabs)}, new={len(new_tabs)}',
-        )
-        return existing_tabs + new_tabs
+        pass
 
     async def get_tab_by_target(self, target: TargetInfo) -> Tab:
-        tab = Tab(self, **self._get_tab_kwargs(target['targetId']))
-        await self._apply_user_agent_override(tab)
-        return tab
+        pass
 
     async def set_download_path(self, path: str, browser_context_id: Optional[str] = None):
         """Set download directory path (convenience method for set_download_behavior)."""
-        logger.info(f'Setting download path: {path} (context={browser_context_id})')
-        return await self._execute_command(
-            BrowserCommands.set_download_behavior(
-                behavior=DownloadBehavior.ALLOW,
-                download_path=path,
-                browser_context_id=browser_context_id,
-            )
-        )
+        pass
 
     async def set_download_behavior(
         self,
@@ -395,31 +320,17 @@ class Browser(ABC):  # noqa: PLR0904
             browser_context_id: Context to apply to (default if None).
             events_enabled: Generate download events for progress tracking.
         """
-        logger.info(
-            f'Setting download behavior: behavior={behavior},'
-            f'path={download_path}, context={browser_context_id},'
-            f'events={events_enabled}'
-        )
-        return await self._execute_command(
-            BrowserCommands.set_download_behavior(
-                behavior=behavior,
-                download_path=download_path,
-                browser_context_id=browser_context_id,
-                events_enabled=events_enabled,
-            )
-        )
+        pass
 
     async def delete_all_cookies(self, browser_context_id: Optional[str] = None):
         """Delete all cookies (session, persistent, third-party) from browser or context."""
-        logger.info(f'Clearing all cookies (context={browser_context_id})')
-        return await self._execute_command(StorageCommands.clear_cookies(browser_context_id))
+        pass
 
     async def set_cookies(
         self, cookies: list[CookieParam], browser_context_id: Optional[str] = None
     ):
         """Set multiple cookies in browser or context."""
-        logger.debug(f'Setting {len(cookies)} cookies (context={browser_context_id})')
-        return await self._execute_command(StorageCommands.set_cookies(cookies, browser_context_id))
+        pass
 
     async def get_cookies(self, browser_context_id: Optional[str] = None) -> list[Cookie]:
         """Get all cookies from browser or context.
@@ -428,35 +339,19 @@ class Browser(ABC):  # noqa: PLR0904
             This method does not work with native incognito mode (--incognito flag).
             For incognito mode, use ``tab.get_cookies()`` instead.
         """
-        response: GetCookiesResponse = await self._execute_command(
-            StorageCommands.get_cookies(browser_context_id)
-        )
-        logger.debug(
-            f'Retrieved {len(response["result"]["cookies"])} cookies (context={browser_context_id})'
-        )
-        return response['result']['cookies']
+        pass
 
     async def get_version(self) -> GetVersionResult:
         """Get browser version and CDP protocol information."""
-        response: GetVersionResponse = await self._execute_command(BrowserCommands.get_version())
-        logger.debug(f'Browser version: {response["result"]}')
-        return response['result']
+        pass
 
     async def get_window_id_for_target(self, target_id: str) -> int:
         """Get window ID for target (used for window manipulation via CDP)."""
-        response: GetWindowForTargetResponse = await self._execute_command(
-            BrowserCommands.get_window_for_target(target_id)
-        )
-        logger.debug(f'Window id for target {target_id}: {response["result"]["windowId"]}')
-        return response['result']['windowId']
+        pass
 
     async def get_window_id_for_tab(self, tab: Tab) -> int:
         """Get window ID for tab (convenience method)."""
-        target_id = tab._target_id or (tab._ws_address.split('/')[-1] if tab._ws_address else None)
-        if not target_id:
-            logger.error('Missing target id or ws address for tab when getting window id')
-            raise MissingTargetOrWebSocket()
-        return await self.get_window_id_for_target(target_id)
+        pass
 
     async def get_window_id(self) -> int:
         """
@@ -465,21 +360,15 @@ class Browser(ABC):  # noqa: PLR0904
         Raises:
             NoValidTabFound: If no valid attached tab can be found.
         """
-        targets = await self.get_targets()
-        valid_tab_id = await self._get_valid_tab_id(targets)
-        return await self.get_window_id_for_target(valid_tab_id)
+        pass
 
     async def set_window_maximized(self):
         """Maximize browser window (affects all tabs in window)."""
-        window_id = await self.get_window_id()
-        logger.info(f'Maximizing window: id={window_id}')
-        return await self._execute_command(BrowserCommands.set_window_maximized(window_id))
+        pass
 
     async def set_window_minimized(self):
         """Minimize browser window to taskbar/dock."""
-        window_id = await self.get_window_id()
-        logger.info(f'Minimizing window: id={window_id}')
-        return await self._execute_command(BrowserCommands.set_window_minimized(window_id))
+        pass
 
     async def set_window_bounds(self, bounds: Bounds):
         """
@@ -489,9 +378,7 @@ class Browser(ABC):  # noqa: PLR0904
             bounds: Properties to modify (left, top, width, height, windowState).
                 Only specified properties are changed.
         """
-        window_id = await self.get_window_id()
-        logger.info(f'Setting window bounds: id={window_id}, bounds={bounds}')
-        return await self._execute_command(BrowserCommands.set_window_bounds(window_id, bounds))
+        pass
 
     async def grant_permissions(
         self,
@@ -509,17 +396,11 @@ class Browser(ABC):  # noqa: PLR0904
             origin: Origin to grant to (all origins if None).
             browser_context_id: Context to apply to (default if None).
         """
-        logger.info(
-            f'Granting permissions: {permissions} (origin={origin}, context={browser_context_id})',
-        )
-        return await self._execute_command(
-            BrowserCommands.grant_permissions(permissions, origin, browser_context_id)
-        )
+        pass
 
     async def reset_permissions(self, browser_context_id: Optional[str] = None):
         """Reset all permissions to defaults and restore prompting behavior."""
-        logger.info(f'Resetting permissions (context={browser_context_id})')
-        return await self._execute_command(BrowserCommands.reset_permissions(browser_context_id))
+        pass
 
     @overload
     async def on(
@@ -548,7 +429,7 @@ class Browser(ABC):  # noqa: PLR0904
         """
 
         async def callback_wrapper(event):
-            asyncio.create_task(callback(event))
+            pass
 
         if asyncio.iscoroutinefunction(callback):
             function_to_register = callback_wrapper
@@ -598,18 +479,15 @@ class Browser(ABC):  # noqa: PLR0904
 
     async def disable_fetch_events(self):
         """Disable request interception and release any paused requests."""
-        logger.debug('Disabling Fetch events')
-        return await self._connection_handler.execute_command(FetchCommands.disable())
+        pass
 
     async def enable_runtime_events(self):
         """Enable runtime events."""
-        logger.debug('Enabling Runtime events')
-        return await self._connection_handler.execute_command(RuntimeCommands.enable())
+        pass
 
     async def disable_runtime_events(self):
         """Disable runtime events."""
-        logger.debug('Disabling Runtime events')
-        return await self._connection_handler.execute_command(RuntimeCommands.disable())
+        pass
 
     async def continue_request(
         self,
@@ -623,22 +501,11 @@ class Browser(ABC):  # noqa: PLR0904
         """
         Continue paused request without modifications.
         """
-        logger.debug(f'Continuing request: id={request_id}')
-        return await self._execute_command(
-            FetchCommands.continue_request(
-                request_id=request_id,
-                url=url,
-                method=method,
-                post_data=post_data,
-                headers=headers,
-                intercept_response=intercept_response,
-            )
-        )
+        pass
 
     async def fail_request(self, request_id: str, error_reason: ErrorReason):
         """Fail request with error code."""
-        logger.debug(f'Failing request: id={request_id}, reason={error_reason}')
-        return await self._execute_command(FetchCommands.fail_request(request_id, error_reason))
+        pass
 
     async def fulfill_request(
         self,
@@ -649,32 +516,16 @@ class Browser(ABC):  # noqa: PLR0904
         response_phrase: Optional[str] = None,
     ):
         """Fulfill request with response data."""
-        logger.debug(
-            f'Fulfilling request: id={request_id}, code={response_code}, '
-            f'headers={bool(response_headers)}, body={bool(body)}'
-        )
-        return await self._execute_command(
-            FetchCommands.fulfill_request(
-                request_id=request_id,
-                response_code=response_code,
-                response_headers=response_headers,
-                body=body,
-                response_phrase=response_phrase,
-            )
-        )
+        pass
 
     @staticmethod
     def _validate_connection_port(connection_port: Optional[int]):
         """Validate connection port."""
-        if connection_port and connection_port < 0:
-            logger.error(f'Invalid connection port: {connection_port}')
-            raise InvalidConnectionPort()
+        pass
 
     async def _continue_request_callback(self, event: RequestPausedEvent):
         """Internal callback to continue paused requests."""
-        request_id = event['params']['requestId']
-        logger.debug(f'[Fetch] REQUEST_PAUSED -> continue: id={request_id}')
-        return await self.continue_request(request_id)
+        pass
 
     async def _continue_request_with_auth_callback(
         self,
@@ -683,28 +534,12 @@ class Browser(ABC):  # noqa: PLR0904
         proxy_password: Optional[str],
     ):
         """Internal callback for proxy authentication."""
-        request_id = event['params']['requestId']
-        logger.debug(
-            f'[Fetch] AUTH_REQUIRED -> provide credentials: id={request_id}, '
-            f'user_set={bool(proxy_username)}'
-        )
-        response: Response = await self._execute_command(
-            FetchCommands.continue_request_with_auth(
-                request_id,
-                auth_challenge_response=AuthChallengeResponseType.PROVIDE_CREDENTIALS,
-                proxy_username=proxy_username,
-                proxy_password=proxy_password,
-            )
-        )
-        await self.disable_fetch_events()
-        return response
+        pass
 
     @staticmethod
     async def _tab_continue_request_callback(event: RequestPausedEvent, tab: Tab):
         """Internal callback to continue paused requests at Tab level."""
-        request_id = event['params']['requestId']
-        logger.debug(f'[Tab Fetch] REQUEST_PAUSED -> continue: id={request_id}')
-        return await tab.continue_request(request_id)
+        pass
 
     @staticmethod
     async def _tab_continue_request_with_auth_callback(
@@ -714,53 +549,13 @@ class Browser(ABC):  # noqa: PLR0904
         proxy_password: Optional[str],
     ):
         """Internal callback for proxy/server authentication at Tab level."""
-        request_id = event['params']['requestId']
-        logger.debug(
-            f'[Tab Fetch] AUTH_REQUIRED -> provide credentials: id={request_id}, '
-            f'user_set={bool(proxy_username)}'
-        )
-        response: Response = await tab.continue_with_auth(
-            request_id=request_id,
-            auth_challenge_response=AuthChallengeResponseType.PROVIDE_CREDENTIALS,
-            proxy_username=proxy_username,
-            proxy_password=proxy_password,
-        )
-        await tab.disable_fetch_events()
-        return response
+        pass
 
     async def _setup_context_proxy_auth_for_tab(
         self, tab: Tab, browser_context_id: Optional[str]
     ) -> None:
         """Enable proxy auth handling for a Tab if its context has credentials stored."""
-        if not browser_context_id:
-            return
-        creds = self._context_proxy_auth.get(browser_context_id)
-        if not creds:
-            return
-        username, password = creds
-        logger.debug(
-            f'Enabling context-level proxy auth for tab (context={browser_context_id}, '
-            f'user_set={bool(username)}'
-        )
-        await tab.enable_fetch_events(handle_auth=True)
-        await tab.on(
-            FetchEvent.REQUEST_PAUSED,
-            partial(
-                self._tab_continue_request_callback,
-                tab=tab,
-            ),
-            temporary=True,
-        )
-        await tab.on(
-            FetchEvent.AUTH_REQUIRED,
-            partial(
-                self._tab_continue_request_with_auth_callback,
-                tab=tab,
-                proxy_username=username,
-                proxy_password=password,
-            ),
-            temporary=True,
-        )
+        pass
 
     async def _apply_user_agent_override(self, tab: Tab) -> None:
         """Apply consistent User-Agent override to a tab if --user-agent= is set.
@@ -841,7 +636,7 @@ class Browser(ABC):  # noqa: PLR0904
     @staticmethod
     def _is_valid_tab(target: TargetInfo) -> bool:
         """Check if target is a valid browser tab (filters out extensions)."""
-        return target.get('type') == 'page' and 'chrome-extension://' not in target.get('url', '')
+        pass
 
     @staticmethod
     async def _get_valid_tab_id(targets: list[TargetInfo]) -> str:
@@ -950,23 +745,11 @@ class Browser(ABC):  # noqa: PLR0904
     @staticmethod
     def _validate_ws_address(ws_address: str):
         """Validate WebSocket address."""
-        min_slashes = 4
-        if not ws_address.startswith(('ws://', 'wss://')):
-            logger.error('Invalid WebSocket address: missing ws:// or wss:// prefix')
-            raise InvalidWebSocketAddress('WebSocket address must start with ws:// or wss://')
-        if len(ws_address.split('/')) < min_slashes:
-            logger.error('Invalid WebSocket address: not enough slashes')
-            raise InvalidWebSocketAddress(
-                f'WebSocket address must contain at least {min_slashes} slashes'
-            )
+        pass
 
     async def _setup_ws_address(self, ws_address: str):
         """Setup WebSocket address for browser."""
-        self._validate_ws_address(ws_address)
-        self._ws_address = ws_address
-        self._connection_handler._ws_address = self._ws_address
-        await self._connection_handler._ensure_active_connection()
-        logger.info('WebSocket address set for browser-level connection')
+        pass
 
     def _get_tab_kwargs(self, target_id: str, browser_context_id: Optional[str] = None) -> dict:
         """
@@ -981,16 +764,7 @@ class Browser(ABC):  # noqa: PLR0904
         Returns:
             Dict of kwargs for creating a tab.
         """
-        kwargs: dict[str, Any] = {
-            'target_id': target_id,
-            'browser_context_id': browser_context_id,
-        }
-        if self._ws_address:
-            kwargs['ws_address'] = self._get_tab_ws_address(target_id)
-        else:
-            kwargs['connection_port'] = self._connection_port
-        logger.debug(f'Tab kwargs resolved for {target_id}: using_ws={bool(self._ws_address)}')
-        return kwargs
+        pass
 
     def _get_tab_ws_address(self, tab_id: str) -> str:
         """
@@ -1002,15 +776,7 @@ class Browser(ABC):  # noqa: PLR0904
         to the page-level endpoint (devtools/page/<tab_id>), which is critical
         for providers like Browserless or authenticated CDP proxies.
         """
-        if not self._ws_address:
-            raise InvalidWebSocketAddress('WebSocket address is not set')
-
-        parts = urlsplit(self._ws_address)
-        # Preserve scheme and netloc; build the page path and keep query/fragment
-        page_path = f'/devtools/page/{tab_id}'
-        ws = urlunsplit((parts.scheme, parts.netloc, page_path, parts.query, parts.fragment))
-        logger.debug(f'Resolved tab WebSocket address: {ws}')
-        return ws
+        pass
 
     @staticmethod
     def _sanitize_proxy_and_extract_auth(
@@ -1026,34 +792,7 @@ class Browser(ABC):  # noqa: PLR0904
         Returns a (sanitized_proxy, (user, pass) | None).
         Ensures scheme is present in the sanitized URL (defaults to http).
         """
-        base = proxy_server if '://' in proxy_server else f'http://{proxy_server}'
-        parts = urlsplit(base)
-        netloc = parts.netloc
-        creds: Optional[tuple[str, str]] = None
-        if '@' in netloc:
-            cred_part, host_part = netloc.split('@', 1)
-            if ':' in cred_part:
-                user, pwd = cred_part.split(':', 1)
-            else:
-                user, pwd = cred_part, ''
-            creds = (user, pwd)
-            sanitized = urlunsplit((
-                parts.scheme,
-                host_part,
-                parts.path,
-                parts.query,
-                parts.fragment,
-            ))
-        else:
-            # No creds; ensure scheme
-            sanitized = urlunsplit((
-                parts.scheme,
-                parts.netloc,
-                parts.path,
-                parts.query,
-                parts.fragment,
-            ))
-        return sanitized, creds
+        pass
 
     @abstractmethod
     def _get_default_binary_location(self) -> str:

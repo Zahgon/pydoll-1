@@ -89,7 +89,7 @@ class Response:
             This follows HTTP conventions where 2xx codes indicate success
             and 3xx codes indicate redirection (still considered "ok").
         """
-        return self._ok
+        pass
 
     @property
     def cookies(self) -> list[CookieParam]:
@@ -104,7 +104,7 @@ class Response:
             These are only NEW/UPDATED cookies from this response. Existing
             browser cookies are managed automatically by the browser context.
         """
-        return self._cookies
+        pass
 
     @property
     def request_headers(self) -> list[HeaderEntry]:
@@ -119,7 +119,7 @@ class Response:
             This shows the ACTUAL headers sent, which may differ from what
             was originally specified due to browser modifications.
         """
-        return self._request_headers
+        pass
 
     @property
     def headers(self) -> list[HeaderEntry]:
@@ -133,7 +133,7 @@ class Response:
             Some security-sensitive headers may be filtered by the browser
             and not appear in this list due to CORS policies.
         """
-        return self._response_headers
+        pass
 
     @property
     def status_code(self) -> int:
@@ -142,7 +142,7 @@ class Response:
         Returns:
             Integer status code (e.g., 200 for OK, 404 for Not Found, 500 for Server Error).
         """
-        return self._status_code
+        pass
 
     @property
     def text(self) -> str:
@@ -156,9 +156,7 @@ class Response:
             Decoding uses 'replace' error handling to avoid crashes on
             invalid UTF-8 sequences.
         """
-        if not self._text and self.content:
-            self._text = self.content.decode('utf-8', errors='replace')
-        return self._text
+        pass
 
     @property
     def content(self) -> bytes:
@@ -168,7 +166,7 @@ class Response:
             Unmodified response body as bytes. Useful for binary data
             (images, files, etc.) or when you need to handle encoding manually.
         """
-        return self._content
+        pass
 
     @property
     def url(self) -> str:
@@ -178,7 +176,7 @@ class Response:
             The final URL that was accessed, which may differ from the
             original request URL if redirects occurred.
         """
-        return self._url
+        pass
 
     def json(self) -> Union[dict[str, Any], list]:
         """Parse and return the response content as JSON data.
@@ -197,15 +195,7 @@ class Response:
             - Subsequent calls return cached result for better performance
             - If JSON was pre-parsed during initialization, that result is returned
         """
-        if self._json is not None:
-            return self._json
-
-        try:
-            self._json = jsonlib.loads(self.text)
-            return self._json
-        except jsonlib.JSONDecodeError as exc:
-            logger.debug('Failed to decode response as JSON')
-            raise ValueError('Response is not valid JSON') from exc
+        pass
 
     def raise_for_status(self) -> None:
         """Raise an HTTPError if the response indicates an HTTP error status.
@@ -221,8 +211,4 @@ class Response:
             This method is compatible with requests.Response.raise_for_status()
             for easy migration from the requests library.
         """
-        if self.status_code not in STATUS_CODE_RANGE_OK:
-            logger.error(
-                f'HTTP error status encountered: status={self.status_code}, url={self._url}'
-            )
-            raise HTTPError(f'{self.status_code} Client Error: for url {self._url}')
+        pass

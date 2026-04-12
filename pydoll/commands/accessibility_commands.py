@@ -82,16 +82,7 @@ class AccessibilityCommands:
         Returns:
             GetPartialAXTreeCommand: CDP command to get the partial AX tree.
         """
-        params = GetPartialAXTreeParams()
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_id is not None:
-            params['objectId'] = object_id
-        if fetch_relatives is not None:
-            params['fetchRelatives'] = fetch_relatives
-        return Command(method=AccessibilityMethod.GET_PARTIAL_AX_TREE, params=params)
+        pass
 
     @staticmethod
     def get_full_ax_tree(
@@ -110,12 +101,7 @@ class AccessibilityCommands:
         Returns:
             GetFullAXTreeCommand: CDP command to get the full AX tree.
         """
-        params = GetFullAXTreeParams()
-        if depth is not None:
-            params['depth'] = depth
-        if frame_id is not None:
-            params['frameId'] = frame_id
-        return Command(method=AccessibilityMethod.GET_FULL_AX_TREE, params=params)
+        pass
 
     @staticmethod
     def get_root_ax_node(
@@ -131,10 +117,7 @@ class AccessibilityCommands:
         Returns:
             GetRootAXNodeCommand: CDP command to get the root AX node.
         """
-        params = GetRootAXNodeParams()
-        if frame_id is not None:
-            params['frameId'] = frame_id
-        return Command(method=AccessibilityMethod.GET_ROOT_AX_NODE, params=params)
+        pass
 
     @staticmethod
     def get_ax_node_and_ancestors(
@@ -154,14 +137,7 @@ class AccessibilityCommands:
         Returns:
             GetAXNodeAndAncestorsCommand: CDP command to get a node and its ancestors.
         """
-        params = GetAXNodeAndAncestorsParams()
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_id is not None:
-            params['objectId'] = object_id
-        return Command(method=AccessibilityMethod.GET_AX_NODE_AND_ANCESTORS, params=params)
+        pass
 
     @staticmethod
     def get_child_ax_nodes(
@@ -179,10 +155,7 @@ class AccessibilityCommands:
         Returns:
             GetChildAXNodesCommand: CDP command to get child AX nodes.
         """
-        params = GetChildAXNodesParams(id=id)
-        if frame_id is not None:
-            params['frameId'] = frame_id
-        return Command(method=AccessibilityMethod.GET_CHILD_AX_NODES, params=params)
+        pass
 
     @staticmethod
     def query_ax_tree(
@@ -209,15 +182,4 @@ class AccessibilityCommands:
         Returns:
             QueryAXTreeCommand: CDP command to query the AX tree.
         """
-        params = QueryAXTreeParams()
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_id is not None:
-            params['objectId'] = object_id
-        if accessible_name is not None:
-            params['accessibleName'] = accessible_name
-        if role is not None:
-            params['role'] = role
-        return Command(method=AccessibilityMethod.QUERY_AX_TREE, params=params)
+        pass

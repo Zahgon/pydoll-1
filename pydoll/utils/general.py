@@ -34,8 +34,7 @@ class TextExtractor(HTMLParser):
             tag (str): The tag name.
             attrs (list): A list of (attribute, value) pairs.
         """
-        if tag in self._skip_tags:
-            self._skip = True
+        pass
 
     def handle_endtag(self, tag):
         """
@@ -44,8 +43,7 @@ class TextExtractor(HTMLParser):
         Args:
             tag (str): The tag name.
         """
-        if tag in self._skip_tags:
-            self._skip = False
+        pass
 
     def handle_data(self, data):
         """
@@ -54,8 +52,7 @@ class TextExtractor(HTMLParser):
         Args:
             data (str): The text data.
         """
-        if not self._skip:
-            self._parts.append(unescape(data))
+        pass
 
     def get_strings(self, strip: bool):
         """
@@ -67,8 +64,7 @@ class TextExtractor(HTMLParser):
         Yields:
             str: Visible text fragments.
         """
-        for text in self._parts:
-            yield text.strip() if strip else text
+        pass
 
     def get_text(self, separator: str, strip: bool) -> str:
         """
@@ -81,7 +77,7 @@ class TextExtractor(HTMLParser):
         Returns:
             str: The visible text.
         """
-        return separator.join(self.get_strings(strip=strip))
+        pass
 
 
 def extract_text_from_html(html: str, separator: str = '', strip: bool = False) -> str:
@@ -96,9 +92,7 @@ def extract_text_from_html(html: str, separator: str = '', strip: bool = False) 
     Returns:
         str: The extracted visible text.
     """
-    parser = TextExtractor()
-    parser.feed(html)
-    return parser.get_text(separator=separator, strip=strip)
+    pass
 
 
 def decode_base64_to_bytes(image: str) -> bytes:
@@ -111,7 +105,7 @@ def decode_base64_to_bytes(image: str) -> bytes:
     Returns:
         bytes: The decoded image as bytes.
     """
-    return base64.b64decode(image.encode('utf-8'))
+    pass
 
 
 async def get_browser_ws_address(port: int) -> str:
@@ -126,18 +120,7 @@ async def get_browser_ws_address(port: int) -> str:
             or missing data.
         InvalidResponse: If the response is not valid JSON.
     """
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f'http://localhost:{port}/json/version') as response:
-                response.raise_for_status()
-                data = await response.json()
-                return data['webSocketDebuggerUrl']
-
-    except aiohttp.ClientError as e:
-        raise NetworkError(f'Failed to get browser ws address: {e}')
-
-    except KeyError as e:
-        raise InvalidResponse(f'Failed to get browser ws address: {e}')
+    pass
 
 
 def validate_browser_paths(paths: list[str]) -> str:
@@ -271,15 +254,4 @@ def normalize_synthetic_xpath(selector: str) -> str:
     Returns:
         str: The normalized original XPath or the input selector if no normalization applies.
     """
-    s = selector.strip()
-    if not s.startswith('//*[@xpath='):
-        return selector
-    prefix = '//*[@xpath="'
-    start_idx = s.find(prefix)
-    if start_idx == -1:
-        return selector
-    start_idx += len(prefix)
-    end_idx = s.rfind('"]')
-    if end_idx == -1 or end_idx <= start_idx:
-        return selector
-    return s[start_idx:end_idx]
+    pass

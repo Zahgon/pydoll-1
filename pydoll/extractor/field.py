@@ -35,7 +35,7 @@ class ExtractionMetadata:
     @property
     def has_selector(self) -> bool:
         """Whether this field has a CSS or XPath selector."""
-        return self.selector is not None
+        pass
 
 
 def pop_field_metadata(key: int) -> Optional[ExtractionMetadata]:
@@ -50,7 +50,7 @@ def pop_field_metadata(key: int) -> Optional[ExtractionMetadata]:
     Returns:
         ExtractionMetadata if found, None otherwise.
     """
-    return _FIELD_METADATA_REGISTRY.pop(key, None)
+    pass
 
 
 def Field(

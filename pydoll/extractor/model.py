@@ -46,14 +46,7 @@ class ExtractionModel(BaseModel):
             InvalidExtractionModel: If a field has metadata but lacks
                 both selector and description.
         """
-        # Check own __dict__ to avoid inheriting parent's cache via MRO
-        own_cache = cls.__dict__.get('_extraction_fields_cache')
-        if own_cache is not None:
-            return own_cache
-
-        result = _collect_extraction_metadata(cls)
-        cls._extraction_fields_cache = result
-        return result
+        pass
 
 
 def _collect_extraction_metadata(
@@ -75,24 +68,4 @@ def _collect_extraction_metadata(
         InvalidExtractionModel: If a field has metadata but lacks
             both selector and description.
     """
-    result: dict[str, ExtractionMetadata] = {}
-    for name, field_info in cls.model_fields.items():
-        extra = field_info.json_schema_extra
-        if not isinstance(extra, dict):
-            continue
-
-        key = extra.get('_extraction_key')
-        if not isinstance(key, int):
-            continue
-
-        metadata = pop_field_metadata(key)
-        if metadata is None:
-            continue
-
-        if not metadata.has_selector and not field_info.description:
-            raise InvalidExtractionModel(
-                f'Field "{name}" must have at least a selector or a description'
-            )
-
-        result[name] = metadata
-    return result
+    pass

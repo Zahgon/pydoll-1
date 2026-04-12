@@ -104,28 +104,8 @@ class EventsManager:
 
     def _update_network_logs(self, event_data: RequestWillBeSentEvent):
         """Add network event to logs (keeps last 10000 entries)."""
-        self.network_logs.append(event_data)
-        self.network_logs = self.network_logs[-10000:]  # keep only last 10000 logs
+        pass
 
     async def _trigger_callbacks(self, event_name: str, event_data: CDPEvent):
         """Trigger all registered callbacks for event, removing temporary ones."""
-        callbacks_to_remove = []
-
-        for cb_id, cb_data in list(self._event_callbacks.items()):
-            if cb_data['event'] == event_name:
-                try:
-                    if asyncio.iscoroutinefunction(cb_data['callback']):
-                        await cb_data['callback'](event_data)
-                    else:
-                        cb_data['callback'](event_data)
-                except Exception as e:
-                    logger.error(f'Error in callback {cb_id}: {str(e)}')
-
-                if cb_data['temporary']:
-                    callbacks_to_remove.append(cb_id)
-
-        for cb_id in callbacks_to_remove:
-            self.remove_callback(cb_id)
-        logger.debug(
-            f"Triggered callbacks for '{event_name}'. Removed temporaries: {callbacks_to_remove}"
-        )
+        pass

@@ -52,17 +52,7 @@ class ExtractionEngine:
         Raises:
             FieldExtractionFailed: If a required field cannot be extracted.
         """
-        context: FindElementsMixin = self._tab
-        if scope is not None:
-            result = await self._tab.query(scope, timeout=timeout)
-            if not isinstance(result, WebElement):
-                raise ValueError(
-                    f'Expected a single element for scope "{scope}", got {type(result)}'
-                )
-            context = result
-
-        values = await self._extract_fields(model, context, timeout)
-        return _build_instance(model, values)
+        pass
 
     async def extract_all(
         self,
@@ -85,20 +75,7 @@ class ExtractionEngine:
         Returns:
             List of populated model instances.
         """
-        found = await self._tab.query(scope, find_all=True, timeout=timeout, raise_exc=False)
-        if found is None or not found:
-            return []
-
-        containers: list[WebElement] = found if isinstance(found, list) else [found]
-
-        if limit is not None:
-            containers = containers[:limit]
-
-        extraction_tasks = [
-            self._extract_fields(model, container, timeout) for container in containers
-        ]
-        all_values = await asyncio.gather(*extraction_tasks)
-        return [_build_instance(model, values) for values in all_values]
+        pass
 
     async def _extract_fields(
         self,
@@ -119,39 +96,7 @@ class ExtractionEngine:
         Returns:
             Dictionary of field name -> extracted value.
         """
-        field_names: list[str] = []
-        coroutines: list[
-            Coroutine[None, None, Union[str, int, float, bool, list[str], object]]
-        ] = []
-
-        for name, metadata in model.get_extraction_fields().items():
-            if not metadata.has_selector:
-                logger.debug(f'Skipping field "{name}" (no selector)')
-                continue
-
-            field_info = model.model_fields[name]
-            annotation = field_info.annotation
-            if annotation is None:
-                continue
-
-            field_names.append(name)
-            coroutines.append(self._extract_field(metadata, annotation, context, timeout))
-
-        results = await asyncio.gather(*coroutines, return_exceptions=True)
-
-        values: dict[str, Union[str, int, float, bool, list[str], object]] = {}
-        for name, result in zip(field_names, results):
-            if isinstance(result, BaseException):
-                field_info = model.model_fields[name]
-                if not field_info.is_required():
-                    logger.debug(f'Optional field "{name}" extraction failed: {result}')
-                    continue
-                raise FieldExtractionFailed(
-                    f'Required field "{name}" could not be extracted: {result}'
-                ) from result
-            values[name] = result
-
-        return values
+        pass
 
     async def _extract_field(
         self,
@@ -174,15 +119,7 @@ class ExtractionEngine:
         Returns:
             Extracted and optionally transformed value.
         """
-        unwrapped = _unwrap_optional(annotation)
-
-        if _is_list_type(unwrapped):
-            return await self._extract_list_field(metadata, unwrapped, context, timeout)
-
-        if _is_extraction_model(unwrapped):
-            return await self._extract_nested_model(metadata, unwrapped, context, timeout)
-
-        return await _extract_scalar_field(metadata, context, timeout)
+        pass
 
     async def _extract_list_field(
         self,
@@ -192,25 +129,7 @@ class ExtractionEngine:
         timeout: int,
     ) -> list[Union[str, int, float, bool, object]]:
         """Extract a list of values from multiple matching elements."""
-        selector = metadata.selector
-        if selector is None:
-            return []
-
-        found = await context.query(selector, find_all=True, timeout=timeout, raise_exc=False)
-        if found is None or not found:
-            return []
-
-        elements: list[WebElement] = found if isinstance(found, list) else [found]
-        inner_type = _get_inner_type(annotation)
-
-        if _is_extraction_model(inner_type):
-            all_field_values = await asyncio.gather(
-                *(self._extract_fields(inner_type, el, timeout) for el in elements)
-            )
-            return [_build_instance(inner_type, fv) for fv in all_field_values]
-
-        all_raw = await asyncio.gather(*(_extract_value(el, metadata) for el in elements))
-        return [_apply_transform(raw, metadata) for raw in all_raw]
+        pass
 
     async def _extract_nested_model(
         self,
@@ -220,15 +139,7 @@ class ExtractionEngine:
         timeout: int,
     ) -> T:
         """Extract a nested ExtractionModel by scoping to the selector element."""
-        selector = metadata.selector
-        if selector is None:
-            raise FieldExtractionFailed('Nested model field has no selector')
-
-        result = await context.query(selector, timeout=timeout, raise_exc=True)
-        if not isinstance(result, WebElement):
-            raise ValueError(f'Expected a single element for "{selector}", got {type(result)}')
-        values = await self._extract_fields(model, result, timeout)
-        return _build_instance(model, values)
+        pass
 
 
 async def _extract_scalar_field(
@@ -237,15 +148,7 @@ async def _extract_scalar_field(
     timeout: int,
 ) -> Union[str, int, float, bool, object]:
     """Extract a single scalar value from the DOM."""
-    selector = metadata.selector
-    if selector is None:
-        raise FieldExtractionFailed('Scalar field has no selector')
-
-    result = await context.query(selector, timeout=timeout, raise_exc=True)
-    if not isinstance(result, WebElement):
-        raise ValueError(f'Expected a single element for "{selector}", got {type(result)}')
-    raw = await _extract_value(result, metadata)
-    return _apply_transform(raw, metadata)
+    pass
 
 
 async def _extract_value(
@@ -264,9 +167,7 @@ async def _extract_value(
     Returns:
         Raw string value before transform.
     """
-    if metadata.attribute is not None:
-        return element.get_attribute(metadata.attribute) or ''
-    return await element.text
+    pass
 
 
 def _apply_transform(
@@ -282,9 +183,7 @@ def _apply_transform(
     Returns:
         Transformed value, or raw string if no transform.
     """
-    if metadata.transform is not None:
-        return metadata.transform(raw)
-    return raw
+    pass
 
 
 def _build_instance(
@@ -305,10 +204,7 @@ def _build_instance(
     Raises:
         FieldExtractionFailed: If pydantic validation fails.
     """
-    try:
-        return model(**values)
-    except Exception as exc:
-        raise FieldExtractionFailed(f'Failed to build {model.__name__}: {exc}') from exc
+    pass
 
 
 def _unwrap_optional(annotation: type) -> type:
@@ -316,31 +212,19 @@ def _unwrap_optional(annotation: type) -> type:
 
     Handles both typing.Optional (Union) and PEP 604 syntax (types.UnionType).
     """
-    origin = get_origin(annotation)
-    if origin is Union or isinstance(annotation, types.UnionType):
-        args = get_args(annotation)
-        non_none = [a for a in args if a is not type(None)]
-        if len(non_none) == 1:
-            return non_none[0]
-    return annotation
+    pass
 
 
 def _is_list_type(annotation: type) -> bool:
     """Check if annotation is list[X]."""
-    return get_origin(annotation) is list
+    pass
 
 
 def _get_inner_type(annotation: type) -> type:
     """Get X from list[X]."""
-    args = get_args(annotation)
-    if args:
-        return args[0]
-    return str
+    pass
 
 
 def _is_extraction_model(annotation: type) -> bool:
     """Check if annotation is an ExtractionModel subclass."""
-    try:
-        return isinstance(annotation, type) and issubclass(annotation, ExtractionModel)
-    except TypeError:
-        return False
+    pass

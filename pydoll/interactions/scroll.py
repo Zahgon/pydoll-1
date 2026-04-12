@@ -78,20 +78,7 @@ class Scroll:
             smooth: Use smooth scrolling animation if True, instant if False.
             humanize: Simulate human-like scrolling with momentum and inertia.
         """
-        if humanize:
-            await self._scroll_humanized(position, distance)
-            return
-
-        axis, scroll_distance = self._get_axis_and_distance(position, distance)
-        behavior = self._get_behavior(smooth)
-
-        script = Scripts.SCROLL_BY.format(
-            axis=axis,
-            distance=scroll_distance,
-            behavior=behavior,
-        )
-
-        await self._execute_script_await_promise(script)
+        pass
 
     async def to_top(self, smooth: bool = True, humanize: bool = False):
         """
@@ -101,13 +88,7 @@ class Scroll:
             smooth: Use smooth scrolling animation if True, instant if False.
             humanize: Simulate human-like scrolling with momentum and inertia.
         """
-        if humanize:
-            await self._scroll_to_end_humanized(ScrollPosition.UP)
-            return
-
-        behavior = self._get_behavior(smooth)
-        script = Scripts.SCROLL_TO_TOP.format(behavior=behavior)
-        await self._execute_script_await_promise(script)
+        pass
 
     async def to_bottom(self, smooth: bool = True, humanize: bool = False):
         """
@@ -117,13 +98,7 @@ class Scroll:
             smooth: Use smooth scrolling animation if True, instant if False.
             humanize: Simulate human-like scrolling with momentum and inertia.
         """
-        if humanize:
-            await self._scroll_to_end_humanized(ScrollPosition.DOWN)
-            return
-
-        behavior = self._get_behavior(smooth)
-        script = Scripts.SCROLL_TO_BOTTOM.format(behavior=behavior)
-        await self._execute_script_await_promise(script)
+        pass
 
     async def _scroll_to_end_humanized(self, position: ScrollPosition):
         """
@@ -132,48 +107,7 @@ class Scroll:
         Humans don't scroll thousands of pixels in one motion - they do
         multiple scroll gestures with brief pauses in between.
         """
-        max_flick_distance = random.uniform(600, 1200)
-        min_remaining_threshold = 30
-        min_stuck_threshold = 5
-        min_flick_distance = 100
-
-        # Failsafe for stuck scroll
-        last_remaining = float('inf')
-        stuck_counter = 0
-        max_stuck_attempts = 10
-
-        while True:
-            if position == ScrollPosition.DOWN:
-                remaining = await self._get_remaining_scroll_to_bottom()
-            else:
-                remaining = await self._get_current_scroll_y()
-
-            if remaining <= min_remaining_threshold:
-                break
-
-            # Check if we are stuck
-            has_progressed = abs(remaining - last_remaining) >= min_stuck_threshold
-
-            if has_progressed:
-                stuck_counter = 0
-
-            if not has_progressed:
-                stuck_counter += 1
-                if stuck_counter >= max_stuck_attempts:
-                    break
-
-            last_remaining = remaining
-
-            flick_distance = min(remaining, max_flick_distance)
-            if flick_distance < min_flick_distance and remaining > min_flick_distance:
-                flick_distance = min_flick_distance
-
-            await self._scroll_humanized(position, flick_distance)
-
-            pause = random.uniform(0.05, 0.15)
-            await asyncio.sleep(pause)
-
-            max_flick_distance = random.uniform(600, 1200)
+        pass
 
     async def _scroll_humanized(self, position: ScrollPosition, target_distance: float):
         """
@@ -186,27 +120,7 @@ class Scroll:
         - Occasional micro-pauses
         - Optional overshoot and correction
         """
-        is_vertical = position in {ScrollPosition.UP, ScrollPosition.DOWN}
-        direction = -1 if position in {ScrollPosition.UP, ScrollPosition.LEFT} else 1
-
-        effective_distance = self._calculate_effective_distance(target_distance)
-        duration = self._calculate_duration(effective_distance)
-
-        scrolled_so_far = await self._perform_scroll_loop(
-            effective_distance, duration, is_vertical, direction
-        )
-
-        if effective_distance > target_distance and scrolled_so_far > target_distance:
-            correction_distance = scrolled_so_far - target_distance
-            correction_direction = -direction
-
-            await asyncio.sleep(random.uniform(0.1, 0.2))
-
-            await self._scroll_correction(
-                is_vertical=is_vertical,
-                direction=correction_direction,
-                distance=correction_distance,
-            )
+        pass
 
     async def _perform_scroll_loop(
         self,
@@ -216,128 +130,35 @@ class Scroll:
         direction: int,
     ) -> float:
         """Execute the main scroll loop using Bezier timing."""
-        timing = self._timing
-        bezier = CubicBezier(*timing.bezier_points)
-
-        start_time = asyncio.get_running_loop().time()
-        current_time = 0.0
-        scrolled_so_far = 0.0
-
-        while current_time < duration:
-            now = asyncio.get_running_loop().time()
-            current_time = now - start_time
-
-            if current_time >= duration:
-                break
-
-            progress = current_time / duration
-            eased_progress = bezier.solve(progress)
-
-            target_pos = effective_distance * eased_progress
-            delta = target_pos - scrolled_so_far
-
-            jitter = random.randint(-timing.delta_jitter, timing.delta_jitter)
-            delta += jitter
-
-            delta = max(delta, 0)
-
-            if delta >= 1:
-                await self._dispatch_scroll_event(
-                    delta_x=0 if is_vertical else int(delta * direction),
-                    delta_y=int(delta * direction) if is_vertical else 0,
-                )
-                scrolled_so_far += delta
-
-            frame_delay = timing.frame_interval + random.uniform(-0.002, 0.002)
-            await asyncio.sleep(frame_delay)
-
-            if random.random() < timing.micro_pause_probability:
-                pause_duration = random.uniform(timing.micro_pause_min, timing.micro_pause_max)
-                await asyncio.sleep(pause_duration)
-                start_time += pause_duration
-
-        return scrolled_so_far
+        pass
 
     def _calculate_effective_distance(self, target_distance: float) -> float:
         """Calculate effective distance including overshoot."""
-        timing = self._timing
-        should_overshoot = random.random() < timing.overshoot_probability
-        overshoot_factor = (
-            random.uniform(timing.overshoot_factor_min, timing.overshoot_factor_max)
-            if should_overshoot
-            else 1.0
-        )
-        return target_distance * overshoot_factor
+        pass
 
     def _calculate_duration(self, distance: float) -> float:
         """Calculate scroll duration based on distance."""
-        timing = self._timing
-        base_duration = random.uniform(timing.min_duration, timing.max_duration)
-        duration = base_duration * (1 + 0.2 * (distance / 1000))
-        return min(duration, 3.0)
+        pass
 
     async def _scroll_correction(self, is_vertical: bool, direction: int, distance: float):
         """Perform small correction scroll after overshoot."""
-        timing = self._timing
-        scrolled = 0.0
-
-        min_correction_velocity = (distance * (0.15)) / timing.frame_interval
-        correction_velocity = random.uniform(
-            max(200, min_correction_velocity), max(400, min_correction_velocity * 1.5)
-        )
-
-        while scrolled < distance:
-            frame_delta = correction_velocity * timing.frame_interval
-            frame_delta = min(frame_delta, distance - scrolled)
-
-            await self._dispatch_scroll_event(
-                delta_x=0 if is_vertical else int(frame_delta * direction),
-                delta_y=int(frame_delta * direction) if is_vertical else 0,
-            )
-
-            scrolled += frame_delta
-            correction_velocity *= 0.85
-
-            await asyncio.sleep(timing.frame_interval)
+        pass
 
     async def _dispatch_scroll_event(self, delta_x: int, delta_y: int):
         """Dispatch a mouse wheel event for scrolling."""
-        viewport = await self._get_viewport_center()
-        command = InputCommands.dispatch_mouse_event(
-            type=MouseEventType.MOUSE_WHEEL,
-            x=viewport[0],
-            y=viewport[1],
-            delta_x=delta_x,
-            delta_y=delta_y,
-        )
-        await self._tab._execute_command(command)
+        pass
 
     async def _get_viewport_center(self) -> tuple[int, int]:
         """Get the center coordinates of the viewport."""
-        command = RuntimeCommands.evaluate(expression=Scripts.GET_VIEWPORT_CENTER)
-        result: EvaluateResponse = await self._tab._execute_command(command)
-
-        value_str = result.get('result', {}).get('result', {}).get('value', '[]')
-        expected_dimensions = 2
-        try:
-            value = json.loads(value_str)
-            if value and isinstance(value, list) and len(value) == expected_dimensions:
-                return (int(value[0]), int(value[1]))
-        except (json.JSONDecodeError, TypeError):
-            pass
-        return (400, 300)
+        pass
 
     async def _get_current_scroll_y(self) -> float:
         """Get current vertical scroll position."""
-        command = RuntimeCommands.evaluate(expression=Scripts.GET_SCROLL_Y)
-        result: EvaluateResponse = await self._tab._execute_command(command)
-        return float(result.get('result', {}).get('result', {}).get('value', 0))
+        pass
 
     async def _get_remaining_scroll_to_bottom(self) -> float:
         """Get remaining distance to scroll to reach the bottom."""
-        command = RuntimeCommands.evaluate(expression=Scripts.GET_REMAINING_SCROLL_TO_BOTTOM)
-        result: EvaluateResponse = await self._tab._execute_command(command)
-        return float(result.get('result', {}).get('result', {}).get('value', 0))
+        pass
 
     @staticmethod
     def _get_axis_and_distance(
@@ -354,14 +175,7 @@ class Scroll:
             Tuple of (axis, signed_distance) where axis is 'left' or 'top'
             and signed_distance is positive or negative based on direction.
         """
-        if position in {ScrollPosition.UP, ScrollPosition.DOWN}:
-            axis = 'top'
-            scroll_distance = -distance if position == ScrollPosition.UP else distance
-            return axis, scroll_distance
-
-        axis = 'left'
-        scroll_distance = -distance if position == ScrollPosition.LEFT else distance
-        return axis, scroll_distance
+        pass
 
     @staticmethod
     def _get_behavior(smooth: bool) -> str:
@@ -374,7 +188,7 @@ class Scroll:
         Returns:
             'smooth' if smooth is True, 'auto' otherwise.
         """
-        return 'smooth' if smooth else 'auto'
+        pass
 
     async def _execute_script_await_promise(self, script: str):
         """
@@ -383,8 +197,7 @@ class Scroll:
         Args:
             script: JavaScript code that returns a Promise.
         """
-        command = RuntimeCommands.evaluate(expression=script, await_promise=True)
-        return await self._tab._execute_command(command)
+        pass
 
 
 # Backward compatibility alias

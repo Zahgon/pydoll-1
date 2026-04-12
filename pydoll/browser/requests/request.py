@@ -198,7 +198,7 @@ class Request:
         Returns:
             Response object with server's response to the submission.
         """
-        return await self.request('POST', url, data=data, json=json, **kwargs)
+        pass
 
     async def put(
         self,
@@ -218,7 +218,7 @@ class Request:
         Returns:
             Response object confirming the update operation.
         """
-        return await self.request('PUT', url, data=data, json=json, **kwargs)
+        pass
 
     async def patch(
         self,
@@ -250,7 +250,7 @@ class Request:
         Returns:
             Response object confirming the deletion.
         """
-        return await self.request('DELETE', url, **kwargs)
+        pass
 
     async def head(self, url: str, **kwargs) -> Response:
         """Execute a HEAD request to retrieve only response headers.
@@ -265,7 +265,7 @@ class Request:
         Returns:
             Response object with headers but no body content.
         """
-        return await self.request('HEAD', url, **kwargs)
+        pass
 
     async def options(self, url: str, **kwargs) -> Response:
         """Execute an OPTIONS request to check allowed methods and capabilities.
@@ -279,7 +279,7 @@ class Request:
         Returns:
             Response object with allowed methods and CORS headers.
         """
-        return await self.request('OPTIONS', url, **kwargs)
+        pass
 
     @asynccontextmanager
     async def record(
@@ -313,13 +313,7 @@ class Request:
         Yields:
             HarCapture: Object with .save(), .to_dict(), and .entries.
         """
-        recorder = HarRecorder(self.tab, resource_types=resource_types)
-        capture = HarCapture(recorder)
-        await recorder.start()
-        try:
-            yield capture
-        finally:
-            await recorder.stop()
+        pass
 
     @staticmethod
     def _build_url_with_params(url: str, params: Optional[dict[str, str]]) -> str:
@@ -437,12 +431,10 @@ class Request:
             logger.debug('Network events enabled on tab for request capture')
 
         def append_received_request(event: dict) -> None:
-            self._requests_received.append(cast(RequestReceivedEvent, event))
-            logger.debug(f'Appended received request: event={event}')
+            pass
 
         def append_sent_request(event: dict) -> None:
-            self._requests_sent.append(cast(RequestSentEvent, event))
-            logger.debug(f'Appended sent request: event={event}')
+            pass
 
         self._callback_ids = [
             await self.tab.on(
@@ -554,9 +546,7 @@ class Request:
         Returns:
             List of headers that were sent with the request.
         """
-        request = params['request']
-        logger.debug(f'Extracting request sent headers: request={request}')
-        return self._convert_dict_to_header_entries(request.get('headers', {}))
+        pass
 
     def _extract_request_sent_extra_info_headers(
         self, params: RequestWillBeSentExtraInfoEventParams
@@ -572,8 +562,7 @@ class Request:
         Returns:
             List of additional headers sent with the request.
         """
-        logger.debug(f'Extracting request sent extra info headers: params={params}')
-        return self._convert_dict_to_header_entries(params.get('headers', {}))
+        pass
 
     def _extract_response_received_headers(
         self, params: ResponseReceivedEventParams
@@ -586,9 +575,7 @@ class Request:
         Returns:
             List of headers received from the server.
         """
-        response = params['response']
-        logger.debug(f'Extracting response received headers: response={response}')
-        return self._convert_dict_to_header_entries(response.get('headers', {}))
+        pass
 
     def _extract_response_received_extra_info_headers(
         self, params: ResponseReceivedExtraInfoEventParams
@@ -605,8 +592,7 @@ class Request:
         Returns:
             List of additional headers received from the server.
         """
-        logger.debug(f'Extracting response received extra info headers: params={params}')
-        return self._convert_dict_to_header_entries(params.get('headers', {}))
+        pass
 
     @staticmethod
     def _convert_dict_to_header_entries(headers_dict: dict) -> list[HeaderEntry]:

@@ -43,20 +43,8 @@ class ChromiumOptionsManager(BrowserOptionsManager):
         Raises:
             InvalidOptionsObject: If provided options is not ChromiumOptions.
         """
-        if self.options is None:
-            self.options = ChromiumOptions()
-            logger.debug('No options provided; created default ChromiumOptions')
-
-        if not isinstance(self.options, ChromiumOptions):
-            logger.error(f'Invalid options type: {type(self.options)}; expected ChromiumOptions')
-            raise InvalidOptionsObject(f'Expected ChromiumOptions, got {type(self.options)}')
-
-        self.add_default_arguments()
-        logger.debug('Options initialized and default arguments applied')
-        return self.options
+        pass
 
     def add_default_arguments(self):
         """Add default arguments required for CDP integration."""
-        logger.debug('Adding default arguments for Chromium-based browsers')
-        self.options.add_argument('--no-first-run')
-        self.options.add_argument('--no-default-browser-check')
+        pass

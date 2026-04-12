@@ -40,7 +40,7 @@ class ChromiumOptions(Options):
         Returns:
             list: A list of command-line arguments added to the options.
         """
-        return self._arguments
+        pass
 
     @arguments.setter
     def arguments(self, args_list: list[str]):
@@ -50,7 +50,7 @@ class ChromiumOptions(Options):
         Args:
             args_list (list): A list of command-line arguments.
         """
-        self._arguments = args_list
+        pass
 
     @property
     def binary_location(self) -> str:
@@ -60,7 +60,7 @@ class ChromiumOptions(Options):
         Returns:
             str: The file path to the browser executable.
         """
-        return self._binary_location
+        pass
 
     @binary_location.setter
     def binary_location(self, location: str):
@@ -70,7 +70,7 @@ class ChromiumOptions(Options):
         Args:
             location (str): The file path to the browser executable.
         """
-        self._binary_location = location
+        pass
 
     @property
     def start_timeout(self) -> int:
@@ -80,7 +80,7 @@ class ChromiumOptions(Options):
         Returns:
             int: The timeout in seconds.
         """
-        return self._start_timeout
+        pass
 
     @start_timeout.setter
     def start_timeout(self, timeout: int):
@@ -90,7 +90,7 @@ class ChromiumOptions(Options):
         Args:
             timeout (int): The timeout in seconds.
         """
-        self._start_timeout = timeout
+        pass
 
     def add_argument(self, argument: str):
         """
@@ -117,22 +117,15 @@ class ChromiumOptions(Options):
         Raises:
             ArgumentNotFoundInOptions: If the argument is not in the list of arguments.
         """
-        if argument not in self._arguments:
-            raise ArgumentNotFoundInOptions(f'Argument not found: {argument}')
-        self._arguments.remove(argument)
+        pass
 
     @property
     def browser_preferences(self) -> dict:
-        return self._browser_preferences
+        pass
 
     @browser_preferences.setter
     def browser_preferences(self, preferences: dict):
-        if not isinstance(preferences, dict):
-            raise ValueError('The experimental options value must be a dict.')
-
-        if preferences.get('prefs'):
-            raise WrongPrefsDict
-        self._browser_preferences = {**self._browser_preferences, **preferences}
+        pass
 
     def _set_pref_path(self, path: list, value):
         """
@@ -144,10 +137,7 @@ class ChromiumOptions(Options):
                     path (e.g., ['plugins', 'always_open_pdf_externally'])
             value -- The value to set at the given path
         """
-        d = self._browser_preferences
-        for key in path[:-1]:
-            d = d.setdefault(key, {})
-        d[path[-1]] = value
+        pass
 
     def _get_pref_path(self, path: list):
         """
@@ -160,12 +150,7 @@ class ChromiumOptions(Options):
         Returns:
             The value at the given path, or None if path doesn't exist
         """
-        nested_preferences = self._browser_preferences
-        with suppress(KeyError, TypeError):
-            for key in path:
-                nested_preferences = nested_preferences[key]
-            return nested_preferences
-        return None
+        pass
 
     def set_default_download_directory(self, path: str):
         """
@@ -176,7 +161,7 @@ class ChromiumOptions(Options):
         Arguments:
             path: Absolute path to the download destination folder.
         """
-        self._set_pref_path(['download', 'default_directory'], path)
+        pass
 
     def set_accept_languages(self, languages: str):
         """
@@ -187,11 +172,11 @@ class ChromiumOptions(Options):
         Arguments:
             languages: A comma-separated string of language codes (e.g., 'pt-BR,pt,en-US,en').
         """
-        self._set_pref_path(['intl', 'accept_languages'], languages)
+        pass
 
     @property
     def prompt_for_download(self) -> bool:
-        return self._get_pref_path(['download', 'prompt_for_download'])
+        pass
 
     @prompt_for_download.setter
     def prompt_for_download(self, enabled: bool):
@@ -203,11 +188,11 @@ class ChromiumOptions(Options):
         Arguments:
             enabled: If True, Chrome will ask for confirmation before downloading.
         """
-        self._set_pref_path(['download', 'prompt_for_download'], enabled)
+        pass
 
     @property
     def block_popups(self) -> bool:
-        return self._get_pref_path(['profile', 'default_content_setting_values', 'popups']) == 0
+        pass
 
     @block_popups.setter
     def block_popups(self, block: bool):
@@ -219,13 +204,11 @@ class ChromiumOptions(Options):
         Arguments:
             block: If True, pop-ups will be blocked (value = 0); otherwise allowed (value = 1).
         """
-        self._set_pref_path(
-            ['profile', 'default_content_setting_values', 'popups'], 0 if block else 1
-        )
+        pass
 
     @property
     def password_manager_enabled(self) -> bool:
-        return self._get_pref_path(['profile', 'password_manager_enabled'])
+        pass
 
     @password_manager_enabled.setter
     def password_manager_enabled(self, enabled: bool):
@@ -237,16 +220,11 @@ class ChromiumOptions(Options):
         Arguments:
             enabled: If True, the password manager is active.
         """
-        self._set_pref_path(['profile', 'password_manager_enabled'], enabled)
-        self._set_pref_path(['credentials_enable_service'], enabled)
+        pass
 
     @property
     def block_notifications(self) -> bool:
-        block_notifications_true_value = 2
-        return (
-            self._get_pref_path(['profile', 'default_content_setting_values', 'notifications'])
-            == block_notifications_true_value
-        )
+        pass
 
     @block_notifications.setter
     def block_notifications(self, block: bool):
@@ -259,21 +237,11 @@ class ChromiumOptions(Options):
             block: If True, notifications will be blocked (value = 2);
             otherwise allowed (value = 1).
         """
-        self._set_pref_path(
-            ['profile', 'default_content_setting_values', 'notifications'],
-            2 if block else 1,
-        )
+        pass
 
     @property
     def allow_automatic_downloads(self) -> bool:
-        return (
-            self._get_pref_path([
-                'profile',
-                'default_content_setting_values',
-                'automatic_downloads',
-            ])
-            == 1
-        )
+        pass
 
     @allow_automatic_downloads.setter
     def allow_automatic_downloads(self, allow: bool):
@@ -286,14 +254,11 @@ class ChromiumOptions(Options):
             allow: If True, automatic downloads are allowed (value = 1);
             otherwise blocked (value = 2).
         """
-        self._set_pref_path(
-            ['profile', 'default_content_setting_values', 'automatic_downloads'],
-            1 if allow else 2,
-        )
+        pass
 
     @property
     def open_pdf_externally(self) -> bool:
-        return self._get_pref_path(['plugins', 'always_open_pdf_externally'])
+        pass
 
     @open_pdf_externally.setter
     def open_pdf_externally(self, enabled: bool):
@@ -305,39 +270,28 @@ class ChromiumOptions(Options):
         Arguments:
             block: If True, location access is blocked (value = 2); otherwise allowed (value = 1).
         """
-        self._set_pref_path(['plugins', 'always_open_pdf_externally'], enabled)
+        pass
 
     @property
     def headless(self) -> bool:
-        return self._headless
+        pass
 
     @headless.setter
     def headless(self, headless: bool):
-        self._headless = headless
-        has_argument = '--headless' in self.arguments
-        methods_map = {True: self.add_argument, False: self.remove_argument}
-        if headless == has_argument:
-            return
-        methods_map[headless]('--headless')
+        pass
 
     @property
     def webrtc_leak_protection(self) -> bool:
-        return self._webrtc_leak_protection
+        pass
 
     @webrtc_leak_protection.setter
     def webrtc_leak_protection(self, enabled: bool):
-        self._webrtc_leak_protection = enabled
-        argument = '--force-webrtc-ip-handling-policy=disable_non_proxied_udp'
-        has_argument = argument in self.arguments
-        methods_map = {True: self.add_argument, False: self.remove_argument}
-        if enabled == has_argument:
-            return
-        methods_map[enabled](argument)
+        pass
 
     @property
     def page_load_state(self) -> PageLoadState:
-        return self._page_load_state
+        pass
 
     @page_load_state.setter
     def page_load_state(self, state: PageLoadState):
-        self._page_load_state = state
+        pass

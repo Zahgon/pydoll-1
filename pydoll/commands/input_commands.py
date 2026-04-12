@@ -76,7 +76,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to cancel dragging.
         """
-        return Command(method=InputMethod.CANCEL_DRAGGING)
+        pass
 
     @staticmethod
     def dispatch_key_event(  # noqa: PLR0912
@@ -136,36 +136,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to dispatch the key event.
         """
-        params = DispatchKeyEventParams(type=type)
-        if modifiers is not None:
-            params['modifiers'] = modifiers
-        if timestamp is not None:
-            params['timestamp'] = timestamp
-        if text is not None:
-            params['text'] = text
-        if unmodified_text is not None:
-            params['unmodifiedText'] = unmodified_text
-        if key_identifier is not None:
-            params['keyIdentifier'] = key_identifier
-        if code is not None:
-            params['code'] = code
-        if key is not None:
-            params['key'] = key
-        if windows_virtual_key_code is not None:
-            params['windowsVirtualKeyCode'] = windows_virtual_key_code
-        if native_virtual_key_code is not None:
-            params['nativeVirtualKeyCode'] = native_virtual_key_code
-        if auto_repeat is not None:
-            params['autoRepeat'] = auto_repeat
-        if is_keypad is not None:
-            params['isKeypad'] = is_keypad
-        if is_system_key is not None:
-            params['isSystemKey'] = is_system_key
-        if location is not None:
-            params['location'] = location
-        if commands is not None:
-            params['commands'] = commands
-        return Command(method=InputMethod.DISPATCH_KEY_EVENT, params=params)
+        pass
 
     @staticmethod
     def dispatch_mouse_event(
@@ -228,32 +199,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to dispatch the mouse event.
         """
-        params = DispatchMouseEventParams(type=type, x=x, y=y)
-        if modifiers is not None:
-            params['modifiers'] = modifiers
-        if timestamp is not None:
-            params['timestamp'] = timestamp
-        if button is not None:
-            params['button'] = button
-        if click_count is not None:
-            params['clickCount'] = click_count
-        if force is not None:
-            params['force'] = force
-        if tangential_pressure is not None:
-            params['tangentialPressure'] = tangential_pressure
-        if tilt_x is not None:
-            params['tiltX'] = tilt_x
-        if tilt_y is not None:
-            params['tiltY'] = tilt_y
-        if twist is not None:
-            params['twist'] = twist
-        if delta_x is not None:
-            params['deltaX'] = delta_x
-        if delta_y is not None:
-            params['deltaY'] = delta_y
-        if pointer_type is not None:
-            params['pointerType'] = pointer_type
-        return Command(method=InputMethod.DISPATCH_MOUSE_EVENT, params=params)
+        pass
 
     @staticmethod
     def dispatch_touch_event(
@@ -287,12 +233,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to dispatch the touch event.
         """
-        params = DispatchTouchEventParams(type=type, touchPoints=touch_points)
-        if modifiers is not None:
-            params['modifiers'] = modifiers
-        if timestamp is not None:
-            params['timestamp'] = timestamp
-        return Command(method=InputMethod.DISPATCH_TOUCH_EVENT, params=params)
+        pass
 
     @staticmethod
     def set_ignore_input_events(ignore: bool) -> SetIgnoreInputEventsCommand:
@@ -309,8 +250,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to set ignore input events.
         """
-        params = SetIgnoreInputEventsParams(ignore=ignore)
-        return Command(method=InputMethod.SET_IGNORE_INPUT_EVENTS, params=params)
+        pass
 
     @staticmethod
     def dispatch_drag_event(
@@ -342,10 +282,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to dispatch the drag event.
         """
-        params = DispatchDragEventParams(type=type, data=data, x=x, y=y)
-        if modifiers is not None:
-            params['modifiers'] = modifiers
-        return Command(method=InputMethod.DISPATCH_DRAG_EVENT, params=params)
+        pass
 
     @staticmethod
     def emulate_touch_from_mouse_event(  # noqa: PLR0913, PLR0917
@@ -386,18 +323,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to emulate touch from mouse event.
         """
-        params = EmulateTouchFromMouseEventParams(type=type, x=x, y=y, button=button)
-        if timestamp is not None:
-            params['timestamp'] = timestamp
-        if delta_x is not None:
-            params['deltaX'] = delta_x
-        if delta_y is not None:
-            params['deltaY'] = delta_y
-        if modifiers is not None:
-            params['modifiers'] = modifiers
-        if click_count is not None:
-            params['clickCount'] = click_count
-        return Command(method=InputMethod.EMULATE_TOUCH_FROM_MOUSE_EVENT, params=params)
+        pass
 
     @staticmethod
     def ime_set_composition(
@@ -429,16 +355,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to set IME composition.
         """
-        params = ImeSetCompositionParams(
-            text=text,
-            selectionStart=selection_start,
-            selectionEnd=selection_end,
-        )
-        if replacement_start is not None:
-            params['replacementStart'] = replacement_start
-        if replacement_end is not None:
-            params['replacementEnd'] = replacement_end
-        return Command(method=InputMethod.IME_SET_COMPOSITION, params=params)
+        pass
 
     @staticmethod
     def insert_text(
@@ -457,8 +374,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to insert text.
         """
-        params = InsertTextParams(text=text)
-        return Command(method=InputMethod.INSERT_TEXT, params=params)
+        pass
 
     @staticmethod
     def set_intercept_drags(enabled: bool) -> SetInterceptDragsCommand:
@@ -479,8 +395,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to set drag interception.
         """
-        params = SetInterceptDragsParams(enabled=enabled)
-        return Command(method=InputMethod.SET_INTERCEPT_DRAGS, params=params)
+        pass
 
     @staticmethod
     def synthesize_pinch_gesture(
@@ -513,12 +428,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to synthesize a pinch gesture.
         """
-        params = SynthesizePinchGestureParams(x=x, y=y, scaleFactor=scale_factor)
-        if relative_speed is not None:
-            params['relativeSpeed'] = relative_speed
-        if gesture_source_type is not None:
-            params['gestureSourceType'] = gesture_source_type
-        return Command(method=InputMethod.SYNTHESIZE_PINCH_GESTURE, params=params)
+        pass
 
     @staticmethod
     def synthesize_scroll_gesture(
@@ -568,28 +478,7 @@ class InputCommands:
         Returns:
             Command: The CDP command to synthesize a scroll gesture.
         """
-        params = SynthesizeScrollGestureParams(x=x, y=y)
-        if x_distance is not None:
-            params['xDistance'] = x_distance
-        if y_distance is not None:
-            params['yDistance'] = y_distance
-        if x_overscroll is not None:
-            params['xOverscroll'] = x_overscroll
-        if y_overscroll is not None:
-            params['yOverscroll'] = y_overscroll
-        if prevent_fling is not None:
-            params['preventFling'] = prevent_fling
-        if speed is not None:
-            params['speed'] = speed
-        if gesture_source_type is not None:
-            params['gestureSourceType'] = gesture_source_type
-        if repeat_count is not None:
-            params['repeatCount'] = repeat_count
-        if repeat_delay_ms is not None:
-            params['repeatDelayMs'] = repeat_delay_ms
-        if interaction_marker_name is not None:
-            params['interactionMarkerName'] = interaction_marker_name
-        return Command(method=InputMethod.SYNTHESIZE_SCROLL_GESTURE, params=params)
+        pass
 
     @staticmethod
     def synthesize_tap_gesture(
@@ -620,11 +509,4 @@ class InputCommands:
         Returns:
             Command: The CDP command to synthesize a tap gesture.
         """
-        params = SynthesizeTapGestureParams(x=x, y=y)
-        if duration is not None:
-            params['duration'] = duration
-        if tap_count is not None:
-            params['tapCount'] = tap_count
-        if gesture_source_type is not None:
-            params['gestureSourceType'] = gesture_source_type
-        return Command(method=InputMethod.SYNTHESIZE_TAP_GESTURE, params=params)
+        pass

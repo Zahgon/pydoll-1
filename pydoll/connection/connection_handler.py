@@ -72,12 +72,12 @@ class ConnectionHandler:
     @property
     def network_logs(self):
         """Access captured network request and response logs."""
-        return self._events_handler.network_logs
+        pass
 
     @property
     def dialog(self):
         """Access currently active JavaScript dialog information."""
-        return self._events_handler.dialog
+        pass
 
     async def ping(self) -> bool:
         """Test if WebSocket connection is active and responsive."""

@@ -115,10 +115,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             ClearCookiesCommand: The CDP command to clear all cookies.
         """
-        params = ClearCookiesParams()
-        if browser_context_id is not None:
-            params['browserContextId'] = browser_context_id
-        return Command(method=StorageMethod.CLEAR_COOKIES, params=params)
+        pass
 
     @staticmethod
     def clear_data_for_origin(origin: str, storage_types: str) -> ClearDataForOriginCommand:
@@ -134,8 +131,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             ClearDataForOriginCommand: The CDP command to clear data for the specified origin.
         """
-        params = ClearDataForOriginParams(origin=origin, storageTypes=storage_types)
-        return Command(method=StorageMethod.CLEAR_DATA_FOR_ORIGIN, params=params)
+        pass
 
     @staticmethod
     def clear_data_for_storage_key(
@@ -156,8 +152,7 @@ class StorageCommands:  # noqa: PLR0904
             ClearDataForStorageKeyCommand: The CDP command to clear data for the specified storage
                 key.
         """
-        params = ClearDataForStorageKeyParams(storageKey=storage_key, storageTypes=storage_types)
-        return Command(method=StorageMethod.CLEAR_DATA_FOR_STORAGE_KEY, params=params)
+        pass
 
     @staticmethod
     def get_cookies(browser_context_id: Optional[str] = None) -> GetCookiesCommand:
@@ -172,10 +167,7 @@ class StorageCommands:  # noqa: PLR0904
             GetCookiesCommand: The CDP command to get all cookies, which will return an array
                 of Cookie objects.
         """
-        params = GetCookiesParams()
-        if browser_context_id is not None:
-            params['browserContextId'] = browser_context_id
-        return Command(method=StorageMethod.GET_COOKIES, params=params)
+        pass
 
     @staticmethod
     def get_storage_key_for_frame(frame_id: str) -> GetStorageKeyForFrameCommand:
@@ -192,8 +184,7 @@ class StorageCommands:  # noqa: PLR0904
             GetStorageKeyForFrameCommand: The CDP command to get the storage key for the specified
                 frame.
         """
-        params = GetStorageKeyForFrameParams(frameId=frame_id)
-        return Command(method=StorageMethod.GET_STORAGE_KEY_FOR_FRAME, params=params)
+        pass
 
     @staticmethod
     def get_usage_and_quota(origin: str) -> GetUsageAndQuotaCommand:
@@ -212,8 +203,7 @@ class StorageCommands:  # noqa: PLR0904
                 - usageBreakdown: Breakdown of usage by storage type
                 - overrideActive: Whether there is an active quota override
         """
-        params = GetUsageAndQuotaParams(origin=origin)
-        return Command(method=StorageMethod.GET_USAGE_AND_QUOTA, params=params)
+        pass
 
     @staticmethod
     def set_cookies(
@@ -230,10 +220,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             SetCookiesCommand: The CDP command to set the specified cookies.
         """
-        params = SetCookiesParams(cookies=cookies)
-        if browser_context_id is not None:
-            params['browserContextId'] = browser_context_id
-        return Command(method=StorageMethod.SET_COOKIES, params=params)
+        pass
 
     @staticmethod
     def set_protected_audience_k_anonymity(
@@ -254,8 +241,7 @@ class StorageCommands:  # noqa: PLR0904
             SetProtectedAudienceKAnonymityCommand: The CDP command to set protected audience
                 K-anonymity.
         """
-        params = SetProtectedAudienceKAnonymityParams(owner=owner, name=name, hashes=hashes)
-        return Command(method=StorageMethod.SET_PROTECTED_AUDIENCE_K_ANONYMITY, params=params)
+        pass
 
     @staticmethod
     def track_cache_storage_for_origin(origin: str) -> TrackCacheStorageForOriginCommand:
@@ -272,8 +258,7 @@ class StorageCommands:  # noqa: PLR0904
             TrackCacheStorageForOriginCommand: The CDP command to register monitoring of the
                 origin's Cache Storage.
         """
-        params = TrackCacheStorageForOriginParams(origin=origin)
-        return Command(method=StorageMethod.TRACK_CACHE_STORAGE_FOR_ORIGIN, params=params)
+        pass
 
     @staticmethod
     def track_cache_storage_for_storage_key(
@@ -293,8 +278,7 @@ class StorageCommands:  # noqa: PLR0904
             TrackCacheStorageForStorageKeyCommand: The CDP command to register monitoring of
                 the key's Cache Storage.
         """
-        params = TrackCacheStorageForStorageKeyParams(storageKey=storage_key)
-        return Command(method=StorageMethod.TRACK_CACHE_STORAGE_FOR_STORAGE_KEY, params=params)
+        pass
 
     @staticmethod
     def track_indexed_db_for_origin(origin: str) -> TrackIndexedDBForOriginCommand:
@@ -312,8 +296,7 @@ class StorageCommands:  # noqa: PLR0904
             TrackIndexedDBForOriginCommand: The CDP command to register monitoring of
                 the origin's IndexedDB.
         """
-        params = TrackIndexedDBForOriginParams(origin=origin)
-        return Command(method=StorageMethod.TRACK_INDEXED_DB_FOR_ORIGIN, params=params)
+        pass
 
     @staticmethod
     def track_indexed_db_for_storage_key(storage_key: str) -> TrackIndexedDBForStorageKeyCommand:
@@ -331,8 +314,7 @@ class StorageCommands:  # noqa: PLR0904
             TrackIndexedDBForStorageKeyCommand: The CDP command to register monitoring of
                 the key's IndexedDB.
         """
-        params = TrackIndexedDBForStorageKeyParams(storageKey=storage_key)
-        return Command(method=StorageMethod.TRACK_INDEXED_DB_FOR_STORAGE_KEY, params=params)
+        pass
 
     @staticmethod
     def untrack_cache_storage_for_origin(origin: str) -> UntrackCacheStorageForOriginCommand:
@@ -349,8 +331,7 @@ class StorageCommands:  # noqa: PLR0904
             UntrackCacheStorageForOriginCommand: The CDP command to cancel monitoring of the
                 origin's Cache Storage.
         """
-        params = UntrackCacheStorageForOriginParams(origin=origin)
-        return Command(method=StorageMethod.UNTRACK_CACHE_STORAGE_FOR_ORIGIN, params=params)
+        pass
 
     @staticmethod
     def untrack_cache_storage_for_storage_key(
@@ -370,8 +351,7 @@ class StorageCommands:  # noqa: PLR0904
             UntrackCacheStorageForStorageKeyCommand: The CDP command to cancel monitoring of
                 the key's Cache Storage.
         """
-        params = UntrackCacheStorageForStorageKeyParams(storageKey=storage_key)
-        return Command(method=StorageMethod.UNTRACK_CACHE_STORAGE_FOR_STORAGE_KEY, params=params)
+        pass
 
     @staticmethod
     def untrack_indexed_db_for_origin(origin: str) -> UntrackIndexedDBForOriginCommand:
@@ -388,8 +368,7 @@ class StorageCommands:  # noqa: PLR0904
             UntrackIndexedDBForOriginCommand: The CDP command to cancel monitoring of
                 the origin's IndexedDB.
         """
-        params = UntrackIndexedDBForOriginParams(origin=origin)
-        return Command(method=StorageMethod.UNTRACK_INDEXED_DB_FOR_ORIGIN, params=params)
+        pass
 
     @staticmethod
     def untrack_indexed_db_for_storage_key(
@@ -408,8 +387,7 @@ class StorageCommands:  # noqa: PLR0904
             UntrackIndexedDBForStorageKeyCommand: The CDP command to cancel monitoring
                 of the key's IndexedDB.
         """
-        params = UntrackIndexedDBForStorageKeyParams(storageKey=storage_key)
-        return Command(method=StorageMethod.UNTRACK_INDEXED_DB_FOR_STORAGE_KEY, params=params)
+        pass
 
     @staticmethod
     def clear_shared_storage_entries(owner_origin: str) -> ClearSharedStorageEntriesCommand:
@@ -425,8 +403,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             ClearSharedStorageEntriesCommand: The CDP command to clear the Shared Storage entries.
         """
-        params = ClearSharedStorageEntriesParams(ownerOrigin=owner_origin)
-        return Command(method=StorageMethod.CLEAR_SHARED_STORAGE_ENTRIES, params=params)
+        pass
 
     @staticmethod
     def clear_trust_tokens(issuer_origin: str) -> ClearTrustTokensCommand:
@@ -444,8 +421,7 @@ class StorageCommands:  # noqa: PLR0904
             ClearTrustTokensCommand: The CDP command to clear Trust Tokens, which will return:
                 - didDeleteTokens: True if any tokens were deleted, False otherwise.
         """
-        params = ClearTrustTokensParams(issuerOrigin=issuer_origin)
-        return Command(method=StorageMethod.CLEAR_TRUST_TOKENS, params=params)
+        pass
 
     @staticmethod
     def delete_shared_storage_entry(owner_origin: str, key: str) -> DeleteSharedStorageEntryCommand:
@@ -459,8 +435,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             DeleteSharedStorageEntryCommand: The CDP command to delete the Shared Storage entry.
         """
-        params = DeleteSharedStorageEntryParams(ownerOrigin=owner_origin, key=key)
-        return Command(method=StorageMethod.DELETE_SHARED_STORAGE_ENTRY, params=params)
+        pass
 
     @staticmethod
     def delete_storage_bucket(bucket: StorageBucket) -> DeleteStorageBucketCommand:
@@ -477,8 +452,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             DeleteStorageBucketCommand: The CDP command to delete the Storage Bucket.
         """
-        params = DeleteStorageBucketParams(bucket=bucket)
-        return Command(method=StorageMethod.DELETE_STORAGE_BUCKET, params=params)
+        pass
 
     @staticmethod
     def get_affected_urls_for_third_party_cookie_metadata(
@@ -499,12 +473,7 @@ class StorageCommands:  # noqa: PLR0904
             GetAffectedUrlsForThirdPartyCookieMetadataCommand: The CDP command to get URLs
                 affected by third-party cookie metadata.
         """
-        params = GetAffectedUrlsForThirdPartyCookieMetadataParams(
-            firstPartyUrl=first_party_url, thirdPartyUrls=third_party_urls
-        )
-        return Command(
-            method=StorageMethod.GET_AFFECTED_URLS_FOR_THIRD_PARTY_COOKIE_METADATA, params=params
-        )
+        pass
 
     @staticmethod
     def get_interest_group_details(owner_origin: str, name: str) -> GetInterestGroupDetailsCommand:
@@ -521,8 +490,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             GetInterestGroupDetailsCommand: The CDP command to get interest group details.
         """
-        params = GetInterestGroupDetailsParams(ownerOrigin=owner_origin, name=name)
-        return Command(method=StorageMethod.GET_INTEREST_GROUP_DETAILS, params=params)
+        pass
 
     @staticmethod
     def get_related_website_sets() -> GetRelatedWebsiteSetsCommand:
@@ -535,7 +503,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             GetRelatedWebsiteSetsCommand: The CDP command to get related website sets.
         """
-        return Command(method=StorageMethod.GET_RELATED_WEBSITE_SETS)
+        pass
 
     @staticmethod
     def get_shared_storage_entries(owner_origin: str) -> GetSharedStorageEntriesCommand:
@@ -548,8 +516,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             GetSharedStorageEntriesCommand: The CDP command to get the Shared Storage entries.
         """
-        params = GetSharedStorageEntriesParams(ownerOrigin=owner_origin)
-        return Command(method=StorageMethod.GET_SHARED_STORAGE_ENTRIES, params=params)
+        pass
 
     @staticmethod
     def get_shared_storage_metadata(owner_origin: str) -> GetSharedStorageMetadataCommand:
@@ -564,8 +531,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             GetSharedStorageMetadataCommand: The CDP command to get Shared Storage metadata.
         """
-        params = GetSharedStorageMetadataParams(ownerOrigin=owner_origin)
-        return Command(method=StorageMethod.GET_SHARED_STORAGE_METADATA, params=params)
+        pass
 
     @staticmethod
     def get_trust_tokens() -> GetTrustTokensCommand:
@@ -576,7 +542,7 @@ class StorageCommands:  # noqa: PLR0904
             GetTrustTokensCommand: The CDP command to get Trust Tokens, which will return pairs
                     of issuer origin and count of available tokens.
         """
-        return Command(method=StorageMethod.GET_TRUST_TOKENS, params={})
+        pass
 
     @staticmethod
     def override_quota_for_origin(
@@ -596,10 +562,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             OverrideQuotaForOriginCommand: The CDP command to override the origin's quota.
         """
-        params = OverrideQuotaForOriginParams(origin=origin)
-        if quota_size is not None:
-            params['quotaSize'] = quota_size
-        return Command(method=StorageMethod.OVERRIDE_QUOTA_FOR_ORIGIN, params=params)
+        pass
 
     @staticmethod
     def reset_shared_storage_budget(owner_origin: str) -> ResetSharedStorageBudgetCommand:
@@ -615,8 +578,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             ResetSharedStorageBudgetCommand: The CDP command to reset the Shared Storage budget.
         """
-        params = ResetSharedStorageBudgetParams(ownerOrigin=owner_origin)
-        return Command(method=StorageMethod.RESET_SHARED_STORAGE_BUDGET, params=params)
+        pass
 
     @staticmethod
     def run_bounce_tracking_mitigations() -> RunBounceTrackingMitigationsCommand:
@@ -630,7 +592,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             RunBounceTrackingMitigationsCommand: The CDP command to run bounce tracking mitigations.
         """
-        return Command(method=StorageMethod.RUN_BOUNCE_TRACKING_MITIGATIONS, params={})
+        pass
 
     @staticmethod
     def send_pending_attribution_reports() -> SendPendingAttributionReportsCommand:
@@ -645,7 +607,7 @@ class StorageCommands:  # noqa: PLR0904
             SendPendingAttributionReportsCommand: The CDP command to send pending attribution
                 reports.
         """
-        return Command(method=StorageMethod.SEND_PENDING_ATTRIBUTION_REPORTS, params={})
+        pass
 
     @staticmethod
     def set_attribution_reporting_local_testing_mode(
@@ -664,10 +626,7 @@ class StorageCommands:  # noqa: PLR0904
             SetAttributionReportingLocalTestingModeCommand: The CDP command to set Attribution
                 Reporting local testing mode.
         """
-        params = SetAttributionReportingLocalTestingModeParams(enabled=enabled)
-        return Command(
-            method=StorageMethod.SET_ATTRIBUTION_REPORTING_LOCAL_TESTING_MODE, params=params
-        )
+        pass
 
     @staticmethod
     def set_attribution_reporting_tracking(enable: bool) -> SetAttributionReportingTrackingCommand:
@@ -681,8 +640,7 @@ class StorageCommands:  # noqa: PLR0904
             SetAttributionReportingTrackingCommand: The CDP command to set Attribution
                 Reporting tracking.
         """
-        params = SetAttributionReportingTrackingParams(enable=enable)
-        return Command(method=StorageMethod.SET_ATTRIBUTION_REPORTING_TRACKING, params=params)
+        pass
 
     @staticmethod
     def set_interest_group_auction_tracking(enable: bool) -> SetInterestGroupAuctionTrackingCommand:
@@ -699,8 +657,7 @@ class StorageCommands:  # noqa: PLR0904
             SetInterestGroupAuctionTrackingCommand: The CDP command to set interest group
                 auction tracking.
         """
-        params = SetInterestGroupAuctionTrackingParams(enable=enable)
-        return Command(method=StorageMethod.SET_INTEREST_GROUP_AUCTION_TRACKING, params=params)
+        pass
 
     @staticmethod
     def set_interest_group_tracking(enable: bool) -> SetInterestGroupTrackingCommand:
@@ -713,8 +670,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             SetInterestGroupTrackingCommand: The CDP command to set interest group tracking.
         """
-        params = SetInterestGroupTrackingParams(enable=enable)
-        return Command(method=StorageMethod.SET_INTEREST_GROUP_TRACKING, params=params)
+        pass
 
     @staticmethod
     def set_shared_storage_entry(
@@ -732,10 +688,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             SetSharedStorageEntryCommand: The CDP command to set a Shared Storage entry.
         """
-        params = SetSharedStorageEntryParams(ownerOrigin=owner_origin, key=key, value=value)
-        if ignore_if_present is not None:
-            params['ignoreIfPresent'] = ignore_if_present
-        return Command(method=StorageMethod.SET_SHARED_STORAGE_ENTRY, params=params)
+        pass
 
     @staticmethod
     def set_shared_storage_tracking(enable: bool) -> SetSharedStorageTrackingCommand:
@@ -750,8 +703,7 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             SetSharedStorageTrackingCommand: The CDP command to set Shared Storage tracking.
         """
-        params = SetSharedStorageTrackingParams(enable=enable)
-        return Command(method=StorageMethod.SET_SHARED_STORAGE_TRACKING, params=params)
+        pass
 
     @staticmethod
     def set_storage_bucket_tracking(
@@ -769,5 +721,4 @@ class StorageCommands:  # noqa: PLR0904
         Returns:
             SetStorageBucketTrackingCommand: The CDP command to set Storage Bucket tracking.
         """
-        params = SetStorageBucketTrackingParams(storageKey=storage_key, enable=enable)
-        return Command(method=StorageMethod.SET_STORAGE_BUCKET_TRACKING, params=params)
+        pass

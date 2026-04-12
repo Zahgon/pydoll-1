@@ -115,17 +115,7 @@ async def _pipe(
     label: str,
 ) -> None:
     """Forward data from *reader* to *writer* until EOF."""
-    try:
-        while True:
-            data = await reader.read(BUFFER_SIZE)
-            if not data:
-                break
-            writer.write(data)
-            await writer.drain()
-    except (ConnectionResetError, BrokenPipeError, OSError):
-        pass
-    finally:
-        await _close_writer(writer)
+    pass
 
 
 class SOCKS5Forwarder:
@@ -223,10 +213,7 @@ class SOCKS5Forwarder:
 
     async def serve_forever(self) -> None:
         """Block until the server is closed (useful for CLI mode)."""
-        if self._server is None:
-            raise RuntimeError('Server not started — call start() first')
-        async with self._server:
-            await self._server.serve_forever()
+        pass
 
     async def _handle_client(
         self,
@@ -234,54 +221,7 @@ class SOCKS5Forwarder:
         client_writer: asyncio.StreamWriter,
     ) -> None:
         """Handle one incoming browser connection."""
-        remote_writer: asyncio.StreamWriter | None = None
-        try:
-            addr_payload, dest_port = await self._accept_local_handshake(
-                client_reader,
-                client_writer,
-            )
-            r_reader, r_writer = await asyncio.wait_for(
-                asyncio.open_connection(self.remote_host, self.remote_port),
-                timeout=HANDSHAKE_TIMEOUT,
-            )
-            remote_writer = r_writer
-            await self._remote_handshake(
-                r_reader,
-                r_writer,
-                addr_payload,
-                dest_port,
-            )
-            await self._send_reply(client_writer, REPLY_SUCCESS)
-            await asyncio.gather(
-                _pipe(client_reader, r_writer, 'client->remote'),
-                _pipe(r_reader, client_writer, 'remote->client'),
-            )
-        except _HandshakeError as exc:
-            logger.warning('Handshake failed: %s', exc)
-            if exc.send_reply:
-                with _suppress_closed():
-                    await self._send_reply(client_writer, exc.reply_code)
-        except asyncio.TimeoutError:
-            logger.warning('Connection to remote proxy timed out')
-            with _suppress_closed():
-                await self._send_reply(client_writer, REPLY_GENERAL_FAILURE)
-        except (ConnectionRefusedError, OSError) as exc:
-            logger.warning('Connection to remote proxy failed: %s', exc)
-            reply = (
-                REPLY_CONNECTION_REFUSED
-                if isinstance(exc, ConnectionRefusedError)
-                else REPLY_GENERAL_FAILURE
-            )
-            with _suppress_closed():
-                await self._send_reply(client_writer, reply)
-        except asyncio.CancelledError:
-            raise
-        except Exception:
-            logger.exception('Unexpected error in client handler')
-        finally:
-            await _close_writer(client_writer)
-            if remote_writer is not None:
-                await _close_writer(remote_writer)
+        pass
 
     async def _accept_local_handshake(
         self,
@@ -294,42 +234,7 @@ class SOCKS5Forwarder:
         Returns ``(addr_payload, dest_port)`` where *addr_payload* is the raw
         SOCKS5 address field (ATYP byte + address bytes) exactly as Chrome
         sent it, ready to be forwarded verbatim to the remote proxy."""
-        try:
-            header = await _read_exact(reader, 2, peer='client')
-        except _HandshakeError as exc:
-            raise _HandshakeError(str(exc), send_reply=False) from exc
-        version, nmethods = header[0], header[1]
-        if version != SOCKS5_VERSION:
-            raise _HandshakeError(
-                f'Unsupported SOCKS version from client: {version}', send_reply=False
-            )
-
-        try:
-            methods = await _read_exact(reader, nmethods, peer='client')
-        except _HandshakeError as exc:
-            raise _HandshakeError(str(exc), send_reply=False) from exc
-        if AUTH_NO_AUTH not in methods:
-            writer.write(bytes([SOCKS5_VERSION, AUTH_NO_ACCEPTABLE]))
-            await writer.drain()
-            raise _HandshakeError('Client does not offer no-auth method', send_reply=False)
-
-        writer.write(bytes([SOCKS5_VERSION, AUTH_NO_AUTH]))
-        await writer.drain()
-
-        req = await _read_exact(reader, 4, peer='client')
-        if req[0] != SOCKS5_VERSION:
-            raise _HandshakeError('Bad SOCKS version in request')
-        if req[1] != CMD_CONNECT:
-            raise _HandshakeError(
-                f'Unsupported command: {req[1]}',
-                reply_code=REPLY_COMMAND_NOT_SUPPORTED,
-            )
-
-        atyp = req[3]
-        addr_payload = await self._read_raw_address(reader, atyp, peer='client')
-        dest_port = struct.unpack('!H', await _read_exact(reader, 2, peer='client'))[0]
-        logger.debug('Client CONNECT to %s port %d', addr_payload.hex(), dest_port)
-        return addr_payload, dest_port
+        pass
 
     async def _remote_handshake(
         self,
@@ -343,69 +248,7 @@ class SOCKS5Forwarder:
 
         *addr_payload* is the raw ATYP + address bytes from the client,
         forwarded verbatim so the address type is preserved."""
-        greeting = bytes([SOCKS5_VERSION, 0x02, AUTH_NO_AUTH, AUTH_USERNAME_PASSWORD])
-        writer.write(greeting)
-        await writer.drain()
-        logger.debug('-> greeting: %s', greeting.hex())
-
-        resp = await _read_exact(reader, 2, peer='remote proxy')
-        logger.debug('<- method selection: %s', resp.hex())
-
-        if resp[0] != SOCKS5_VERSION:
-            raise _HandshakeError(f'Remote proxy bad version (response: {resp.hex()})')
-
-        selected_method = resp[1]
-        if selected_method == AUTH_NO_ACCEPTABLE:
-            raise _HandshakeError('Remote proxy rejected all auth methods')
-
-        if selected_method == AUTH_USERNAME_PASSWORD:
-            uname = self.username.encode()
-            passwd = self.password.encode()
-            auth_req = bytes([0x01, len(uname)]) + uname + bytes([len(passwd)]) + passwd
-            writer.write(auth_req)
-            await writer.drain()
-            logger.debug('-> auth request: ulen=%d plen=%d', len(uname), len(passwd))
-
-            auth_resp = await _read_exact(reader, 2, peer='remote proxy')
-            logger.debug('<- auth response: %s', auth_resp.hex())
-            if auth_resp[1] != 0x00:
-                raise _HandshakeError(
-                    f'Remote proxy authentication failed (status: {auth_resp[1]:#04x})'
-                )
-        elif selected_method == AUTH_NO_AUTH:
-            logger.debug('Remote proxy selected no-auth (0x00)')
-        else:
-            raise _HandshakeError(
-                f'Remote proxy selected unsupported method: {selected_method:#04x}'
-            )
-
-        connect_req = bytes([SOCKS5_VERSION, CMD_CONNECT, 0x00])
-        connect_req += addr_payload
-        connect_req += struct.pack('!H', dest_port)
-        writer.write(connect_req)
-        await writer.drain()
-        logger.debug('-> CONNECT: %s', connect_req.hex())
-
-        reply_header = await _read_exact(reader, 4, peer='remote proxy')
-        logger.debug('<- reply header: %s', reply_header.hex())
-
-        rep = reply_header[1]
-        if rep != REPLY_SUCCESS:
-            extra = b''
-            try:
-                extra = await asyncio.wait_for(reader.read(256), timeout=0.5)
-            except (asyncio.TimeoutError, OSError):
-                pass
-            raise _HandshakeError(
-                f'Remote proxy CONNECT failed '
-                f'(rep={rep:#04x}, reply: {reply_header.hex()}, '
-                f'extra: {extra.hex() if extra else "none"})',
-                reply_code=rep,
-            )
-
-        atyp = reply_header[3]
-        await self._read_raw_address(reader, atyp, peer='remote proxy')
-        await _read_exact(reader, 2, peer='remote proxy')
+        pass
 
     @staticmethod
     async def _read_raw_address(
@@ -416,20 +259,7 @@ class SOCKS5Forwarder:
     ) -> bytes:
         """Read a SOCKS5 address field and return raw bytes including the
         ATYP prefix, suitable for forwarding verbatim to another proxy."""
-        if atyp == ATYP_IPV4:
-            raw = await _read_exact(reader, 4, peer=peer)
-            return bytes([atyp]) + raw
-        if atyp == ATYP_DOMAIN:
-            length_byte = await _read_exact(reader, 1, peer=peer)
-            domain = await _read_exact(reader, length_byte[0], peer=peer)
-            return bytes([atyp]) + length_byte + domain
-        if atyp == ATYP_IPV6:
-            raw = await _read_exact(reader, 16, peer=peer)
-            return bytes([atyp]) + raw
-        raise _HandshakeError(
-            f'Unsupported address type: {atyp}',
-            reply_code=REPLY_ADDRESS_TYPE_NOT_SUPPORTED,
-        )
+        pass
 
     @staticmethod
     async def _send_reply(
@@ -437,21 +267,7 @@ class SOCKS5Forwarder:
         reply_code: int,
     ) -> None:
         """Send a minimal SOCKS5 reply to the client."""
-        writer.write(
-            bytes([
-                SOCKS5_VERSION,
-                reply_code,
-                0x00,
-                ATYP_IPV4,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-            ])
-        )
-        await writer.drain()
+        pass
 
 
 class _HandshakeError(Exception):

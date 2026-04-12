@@ -84,7 +84,7 @@ class BrowserCommands:
             GetVersionCommand: The CDP command that returns browser version details
                 including protocol version, product name, revision, and user agent.
         """
-        return Command(method=BrowserMethod.GET_VERSION)
+        pass
 
     @staticmethod
     def get_browser_command_line() -> GetBrowserCommandLineCommand:
@@ -96,7 +96,7 @@ class BrowserCommands:
 
         Note: Only works if --enable-automation is on the command line.
         """
-        return Command(method=BrowserMethod.GET_BROWSER_COMMAND_LINE)
+        pass
 
     @staticmethod
     def get_histograms(
@@ -115,12 +115,7 @@ class BrowserCommands:
         Returns:
             GetHistogramsCommand: The CDP command that returns histogram data.
         """
-        params = GetHistogramsParams()
-        if query is not None:
-            params['query'] = query
-        if delta:
-            params['delta'] = delta
-        return Command(method=BrowserMethod.GET_HISTOGRAMS, params=params)
+        pass
 
     @staticmethod
     def get_histogram(
@@ -137,10 +132,7 @@ class BrowserCommands:
         Returns:
             GetHistogramCommand: The CDP command that returns histogram data.
         """
-        params = GetHistogramParams(name=name)
-        if delta:
-            params['delta'] = delta
-        return Command(method=BrowserMethod.GET_HISTOGRAM, params=params)
+        pass
 
     @staticmethod
     def get_window_bounds(window_id: WindowID) -> GetWindowBoundsCommand:
@@ -153,8 +145,7 @@ class BrowserCommands:
         Returns:
             GetWindowBoundsCommand: The CDP command that returns window bounds information.
         """
-        params = GetWindowBoundsParams(windowId=window_id)
-        return Command(method=BrowserMethod.GET_WINDOW_BOUNDS, params=params)
+        pass
 
     @staticmethod
     def get_window_for_target(
@@ -171,10 +162,7 @@ class BrowserCommands:
             GetWindowForTargetCommand: The CDP command that returns window information
                 including windowId and bounds.
         """
-        params = GetWindowForTargetParams()
-        if target_id is not None:
-            params['targetId'] = target_id
-        return Command(method=BrowserMethod.GET_WINDOW_FOR_TARGET, params=params)
+        pass
 
     @staticmethod
     def set_window_bounds(window_id: WindowID, bounds: Bounds) -> SetWindowBoundsCommand:
@@ -190,8 +178,7 @@ class BrowserCommands:
         Returns:
             SetWindowBoundsCommand: The CDP command that sets window bounds.
         """
-        params = SetWindowBoundsParams(windowId=window_id, bounds=bounds)
-        return Command(method=BrowserMethod.SET_WINDOW_BOUNDS, params=params)
+        pass
 
     @staticmethod
     def set_contents_size(
@@ -212,12 +199,7 @@ class BrowserCommands:
         Returns:
             SetContentsSizeCommand: The CDP command that sets window contents size.
         """
-        params = SetContentsSizeParams(windowId=window_id)
-        if width is not None:
-            params['width'] = width
-        if height is not None:
-            params['height'] = height
-        return Command(method=BrowserMethod.SET_CONTENTS_SIZE, params=params)
+        pass
 
     @staticmethod
     def set_dock_tile(
@@ -234,12 +216,7 @@ class BrowserCommands:
         Returns:
             SetDockTileCommand: The CDP command that sets dock tile details.
         """
-        params = SetDockTileParams()
-        if badge_label is not None:
-            params['badgeLabel'] = badge_label
-        if image is not None:
-            params['image'] = image
-        return Command(method=BrowserMethod.SET_DOCK_TILE, params=params)
+        pass
 
     @staticmethod
     def execute_browser_command(command_id: BrowserCommandId) -> ExecuteBrowserCommandCommand:
@@ -252,8 +229,7 @@ class BrowserCommands:
         Returns:
             ExecuteBrowserCommandCommand: The CDP command that executes browser command.
         """
-        params = ExecuteBrowserCommandParams(commandId=command_id)
-        return Command(method=BrowserMethod.EXECUTE_BROWSER_COMMAND, params=params)
+        pass
 
     @staticmethod
     def add_privacy_sandbox_enrollment_override(
@@ -270,8 +246,7 @@ class BrowserCommands:
             AddPrivacySandboxEnrollmentOverrideCommand: The CDP command that adds enrollment
             override.
         """
-        params = AddPrivacySandboxEnrollmentOverrideParams(url=url)
-        return Command(method=BrowserMethod.ADD_PRIVACY_SANDBOX_ENROLLMENT_OVERRIDE, params=params)
+        pass
 
     @staticmethod
     def add_privacy_sandbox_coordinator_key_config(
@@ -296,16 +271,7 @@ class BrowserCommands:
         Returns:
             AddPrivacySandboxCoordinatorKeyConfigCommand: The CDP command that adds key config.
         """
-        params = AddPrivacySandboxCoordinatorKeyConfigParams(
-            api=api,
-            coordinatorOrigin=coordinator_origin,
-            keyConfig=key_config,
-        )
-        if browser_context_id is not None:
-            params['browserContextId'] = browser_context_id
-        return Command(
-            method=BrowserMethod.ADD_PRIVACY_SANDBOX_COORDINATOR_KEY_CONFIG, params=params
-        )
+        pass
 
     @staticmethod
     def set_permission(
@@ -326,12 +292,7 @@ class BrowserCommands:
         Returns:
             SetPermissionCommand: The CDP command that sets permission.
         """
-        params = SetPermissionParams(permission=permission, setting=setting)
-        if origin is not None:
-            params['origin'] = origin
-        if browser_context_id is not None:
-            params['browserContextId'] = browser_context_id
-        return Command(method=BrowserMethod.SET_PERMISSION, params=params)
+        pass
 
     @staticmethod
     def grant_permissions(
@@ -351,12 +312,7 @@ class BrowserCommands:
         Returns:
             GrantPermissionsCommand: The CDP command that grants permissions.
         """
-        params = GrantPermissionsParams(permissions=permissions)
-        if origin is not None:
-            params['origin'] = origin
-        if browser_context_id is not None:
-            params['browserContextId'] = browser_context_id
-        return Command(method=BrowserMethod.GRANT_PERMISSIONS, params=params)
+        pass
 
     @staticmethod
     def reset_permissions(
@@ -372,10 +328,7 @@ class BrowserCommands:
         Returns:
             ResetPermissionsCommand: The CDP command that resets permissions.
         """
-        params = ResetPermissionsParams()
-        if browser_context_id is not None:
-            params['browserContextId'] = browser_context_id
-        return Command(method=BrowserMethod.RESET_PERMISSIONS, params=params)
+        pass
 
     @staticmethod
     def set_download_behavior(
@@ -400,14 +353,7 @@ class BrowserCommands:
         Returns:
             SetDownloadBehaviorCommand: The CDP command that sets download behavior.
         """
-        params = SetDownloadBehaviorParams(behavior=behavior)
-        if browser_context_id is not None:
-            params['browserContextId'] = browser_context_id
-        if download_path is not None:
-            params['downloadPath'] = download_path
-        if events_enabled is not None:
-            params['eventsEnabled'] = events_enabled
-        return Command(method=BrowserMethod.SET_DOWNLOAD_BEHAVIOR, params=params)
+        pass
 
     @staticmethod
     def cancel_download(
@@ -425,10 +371,7 @@ class BrowserCommands:
         Returns:
             CancelDownloadCommand: The CDP command that cancels download.
         """
-        params = CancelDownloadParams(guid=guid)
-        if browser_context_id is not None:
-            params['browserContextId'] = browser_context_id
-        return Command(method=BrowserMethod.CANCEL_DOWNLOAD, params=params)
+        pass
 
     @staticmethod
     def close() -> CloseCommand:
@@ -448,7 +391,7 @@ class BrowserCommands:
         Returns:
             CrashCommand: The CDP command that crashes the browser.
         """
-        return Command(method=BrowserMethod.CRASH)
+        pass
 
     @staticmethod
     def crash_gpu_process() -> CrashGpuProcessCommand:
@@ -458,7 +401,7 @@ class BrowserCommands:
         Returns:
             CrashGpuProcessCommand: The CDP command that crashes the GPU process.
         """
-        return Command(method=BrowserMethod.CRASH_GPU_PROCESS)
+        pass
 
     # Helper methods for common window operations
     @staticmethod
@@ -472,8 +415,7 @@ class BrowserCommands:
         Returns:
             SetWindowBoundsCommand: The CDP command that maximizes the window.
         """
-        bounds = Bounds(windowState=WindowState.MAXIMIZED)
-        return BrowserCommands.set_window_bounds(window_id, bounds)
+        pass
 
     @staticmethod
     def set_window_minimized(window_id: WindowID) -> SetWindowBoundsCommand:
@@ -486,8 +428,7 @@ class BrowserCommands:
         Returns:
             SetWindowBoundsCommand: The CDP command that minimizes the window.
         """
-        bounds = Bounds(windowState=WindowState.MINIMIZED)
-        return BrowserCommands.set_window_bounds(window_id, bounds)
+        pass
 
     @staticmethod
     def set_window_fullscreen(window_id: WindowID) -> SetWindowBoundsCommand:
@@ -500,8 +441,7 @@ class BrowserCommands:
         Returns:
             SetWindowBoundsCommand: The CDP command that sets window to fullscreen.
         """
-        bounds = Bounds(windowState=WindowState.FULLSCREEN)
-        return BrowserCommands.set_window_bounds(window_id, bounds)
+        pass
 
     @staticmethod
     def set_window_normal(window_id: WindowID) -> SetWindowBoundsCommand:
@@ -514,5 +454,4 @@ class BrowserCommands:
         Returns:
             SetWindowBoundsCommand: The CDP command that sets window to normal state.
         """
-        bounds = Bounds(windowState=WindowState.NORMAL)
-        return BrowserCommands.set_window_bounds(window_id, bounds)
+        pass

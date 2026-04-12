@@ -67,20 +67,17 @@ class ShadowRoot(FindElementsMixin):
     @property
     def mode(self) -> ShadowRootType:
         """Shadow root mode (open, closed, or user-agent)."""
-        return self._mode
+        pass
 
     @property
     def host_element(self) -> WebElement | None:
         """Reference to the shadow host element, if available."""
-        return self._host_element
+        pass
 
     @property
     async def inner_html(self) -> str:
         """HTML content of the shadow root."""
-        response: GetOuterHTMLResponse = await self._execute_command(
-            DomCommands.get_outer_html(object_id=self._object_id)
-        )
-        return response['result']['outerHTML']
+        pass
 
     def __repr__(self) -> str:
         return f'ShadowRoot(mode={self._mode.value}, object_id={self._object_id})'

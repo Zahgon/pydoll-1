@@ -122,7 +122,7 @@ class Mouse:
     @property
     def timing(self) -> MouseTimingConfig:
         """Current timing configuration for humanized movement."""
-        return self._timing
+        pass
 
     @timing.setter
     def timing(self, config: MouseTimingConfig) -> None:
@@ -131,7 +131,7 @@ class Mouse:
         Args:
             config: New MouseTimingConfig to use for future operations.
         """
-        self._timing = config
+        pass
 
     @property
     def debug(self) -> bool:
@@ -159,11 +159,7 @@ class Mouse:
             y: Target Y coordinate (CSS pixels).
             humanize: Simulate human-like curved movement with natural timing.
         """
-        if humanize:
-            await self._move_humanized(x, y)
-            return
-
-        await self._dispatch_move(x, y)
+        pass
 
     async def click(
         self,
@@ -184,13 +180,7 @@ class Mouse:
             click_count: Number of clicks (2 for double-click).
             humanize: Simulate human-like movement and click timing.
         """
-        if humanize:
-            await self._click_humanized(x, y, button, click_count)
-            return
-
-        await self._dispatch_move(x, y)
-        await self._dispatch_button(MouseEventType.MOUSE_PRESSED, button, click_count)
-        await self._dispatch_button(MouseEventType.MOUSE_RELEASED, button, click_count)
+        pass
 
     async def double_click(
         self,
@@ -209,7 +199,7 @@ class Mouse:
             button: Mouse button to click.
             humanize: Simulate human-like movement and click timing.
         """
-        await self.click(x, y, button=button, click_count=2, humanize=humanize)
+        pass
 
     async def down(self, button: MouseButton = MouseButton.LEFT) -> None:
         """
@@ -218,7 +208,7 @@ class Mouse:
         Args:
             button: Mouse button to press.
         """
-        await self._dispatch_button(MouseEventType.MOUSE_PRESSED, button)
+        pass
 
     async def up(self, button: MouseButton = MouseButton.LEFT) -> None:
         """
@@ -227,7 +217,7 @@ class Mouse:
         Args:
             button: Mouse button to release.
         """
-        await self._dispatch_button(MouseEventType.MOUSE_RELEASED, button)
+        pass
 
     async def drag(
         self,
@@ -248,41 +238,11 @@ class Mouse:
             end_y: End Y coordinate.
             humanize: Simulate human-like drag movement.
         """
-        if humanize:
-            await self._drag_humanized(start_x, start_y, end_x, end_y)
-            return
-
-        await self._dispatch_move(start_x, start_y)
-        await self._dispatch_button(MouseEventType.MOUSE_PRESSED, MouseButton.LEFT)
-        await self._dispatch_move(end_x, end_y)
-        await self._dispatch_button(MouseEventType.MOUSE_RELEASED, MouseButton.LEFT)
+        pass
 
     async def _move_humanized(self, target_x: float, target_y: float) -> None:
         """Move mouse with realistic curved path, timing, tremor, and overshoot."""
-        start = self._position
-        target = (target_x, target_y)
-        distance = math.hypot(target_x - start[0], target_y - start[1])
-
-        if distance < 1.0:
-            await self._dispatch_move(target_x, target_y)
-            return
-
-        config = self._timing
-        duration = fitts_duration(distance, 20.0, config.fitts_a, config.fitts_b)
-        duration = max(config.min_duration, min(duration, config.max_duration))
-
-        should_overshoot = (
-            distance > config.overshoot_speed_threshold
-            and random.random() < config.overshoot_probability
-        )
-
-        if should_overshoot:
-            await self._move_with_overshoot(start, target, duration)
-        else:
-            cp1, cp2 = self._get_control_points(start, target)
-            await self._perform_movement_loop(start, target, duration, cp1, cp2)
-
-        await self._dispatch_move(target_x, target_y)
+        pass
 
     async def _move_with_overshoot(
         self,
@@ -291,19 +251,7 @@ class Mouse:
         duration: float,
     ) -> None:
         """Execute a movement that overshoots the target, then corrects."""
-        config = self._timing
-        overshoot_fraction = random.uniform(
-            config.overshoot_distance_min, config.overshoot_distance_max
-        )
-        dx = target[0] - start[0]
-        dy = target[1] - start[1]
-        overshoot = (target[0] + dx * overshoot_fraction, target[1] + dy * overshoot_fraction)
-
-        cp1, cp2 = self._get_control_points(start, overshoot)
-        await self._perform_movement_loop(start, overshoot, duration * 0.85, cp1, cp2)
-
-        cp1, cp2 = self._get_control_points(overshoot, target)
-        await self._perform_movement_loop(overshoot, target, duration * 0.15, cp1, cp2)
+        pass
 
     async def _perform_movement_loop(
         self,
@@ -314,37 +262,7 @@ class Mouse:
         cp2: tuple[float, float],
     ) -> None:
         """Execute the frame-by-frame movement loop using Bezier path and minimum jerk."""
-        config = self._timing
-        loop = asyncio.get_running_loop()
-        start_time = loop.time()
-        prev = (start[0], start[1], start_time)
-
-        while True:
-            now = loop.time()
-            elapsed = now - start_time
-
-            if elapsed >= duration:
-                break
-
-            t = minimum_jerk(elapsed / duration)
-            x, y = bezier_2d(t, start, cp1, cp2, end)
-
-            sigma = self._compute_tremor_sigma(x, y, now, prev, config)
-            x += random.gauss(0, sigma)
-            y += random.gauss(0, sigma)
-
-            await self._dispatch_move(x, y)
-            prev = (x, y, now)
-
-            frame_delay = config.frame_interval + random.uniform(
-                -config.frame_interval_variance, config.frame_interval_variance
-            )
-            await asyncio.sleep(max(0.001, frame_delay))
-
-            if random.random() < config.micro_pause_probability:
-                pause = random.uniform(config.micro_pause_min, config.micro_pause_max)
-                await asyncio.sleep(pause)
-                start_time += pause
+        pass
 
     @staticmethod
     def _compute_tremor_sigma(
@@ -355,13 +273,7 @@ class Mouse:
         config: MouseTimingConfig,
     ) -> float:
         """Compute tremor amplitude scaled inversely with cursor velocity."""
-        dt = now - prev[2]
-        if dt > 0:
-            velocity = math.hypot(x - prev[0], y - prev[1]) / dt
-            speed_factor = max(0.2, 1.0 - velocity / 500.0)
-        else:
-            speed_factor = 1.0
-        return config.tremor_amplitude * speed_factor
+        pass
 
     async def _click_humanized(
         self,
@@ -371,28 +283,7 @@ class Mouse:
         click_count: int,
     ) -> None:
         """Click with realistic movement and timing."""
-        config = self._timing
-
-        await self._move_humanized(x, y)
-
-        pre_pause = random.uniform(config.pre_click_pause_min, config.pre_click_pause_max)
-        await asyncio.sleep(pre_pause)
-
-        for i in range(click_count):
-            current_count = i + 1
-            await self._dispatch_button(MouseEventType.MOUSE_PRESSED, button, current_count)
-
-            hold = random.uniform(config.click_hold_min, config.click_hold_max)
-            await asyncio.sleep(hold)
-
-            await self._dispatch_button(MouseEventType.MOUSE_RELEASED, button, current_count)
-
-            if current_count < click_count:
-                interval = random.uniform(
-                    config.double_click_interval_min,
-                    config.double_click_interval_max,
-                )
-                await asyncio.sleep(interval)
+        pass
 
     async def _drag_humanized(
         self,
@@ -402,27 +293,7 @@ class Mouse:
         end_y: float,
     ) -> None:
         """Drag with realistic movement, pauses, and timing."""
-        config = self._timing
-
-        await self._move_humanized(start_x, start_y)
-        await self._dispatch_button(MouseEventType.MOUSE_PRESSED, MouseButton.LEFT)
-
-        drag_start_pause = random.uniform(config.drag_start_pause_min, config.drag_start_pause_max)
-        await asyncio.sleep(drag_start_pause)
-
-        start = self._position
-        distance = math.hypot(end_x - start[0], end_y - start[1])
-        duration = fitts_duration(distance, 20.0, config.fitts_a, config.fitts_b)
-        duration = max(config.min_duration, min(duration, config.max_duration))
-
-        cp1, cp2 = self._get_control_points(start, (end_x, end_y))
-        await self._perform_movement_loop(start, (end_x, end_y), duration, cp1, cp2)
-        await self._dispatch_move(end_x, end_y)
-
-        drag_end_pause = random.uniform(config.drag_end_pause_min, config.drag_end_pause_max)
-        await asyncio.sleep(drag_end_pause)
-
-        await self._dispatch_button(MouseEventType.MOUSE_RELEASED, MouseButton.LEFT)
+        pass
 
     def _get_control_points(
         self,
@@ -430,28 +301,11 @@ class Mouse:
         end: tuple[float, float],
     ) -> tuple[tuple[float, float], tuple[float, float]]:
         """Generate Bezier control points using current timing config."""
-        config = self._timing
-        return random_control_points(
-            start,
-            end,
-            config.curvature_min,
-            config.curvature_max,
-            config.curvature_asymmetry,
-            config.short_distance_threshold,
-        )
+        pass
 
     async def _dispatch_move(self, x: float, y: float) -> None:
         """Dispatch a mouseMoved event and update internal position."""
-        command = InputCommands.dispatch_mouse_event(
-            type=MouseEventType.MOUSE_MOVED,
-            x=int(round(x)),
-            y=int(round(y)),
-        )
-        await self._tab._execute_command(command)
-        self._position = (x, y)
-
-        if self._debug:
-            await self._debug_draw_dot(x, y, radius=2, color='rgba(0,150,255,0.6)')
+        pass
 
     async def _dispatch_button(
         self,
@@ -460,30 +314,11 @@ class Mouse:
         click_count: int = 1,
     ) -> None:
         """Dispatch mousePressed or mouseReleased at current position."""
-        command = InputCommands.dispatch_mouse_event(
-            type=event_type,
-            x=int(round(self._position[0])),
-            y=int(round(self._position[1])),
-            button=button,
-            click_count=click_count,
-        )
-        await self._tab._execute_command(command)
-
-        if self._debug and event_type == MouseEventType.MOUSE_PRESSED:
-            await self._debug_draw_dot(
-                self._position[0], self._position[1], radius=6, color='rgba(255,50,50,0.9)'
-            )
+        pass
 
     async def _debug_draw_dot(self, x: float, y: float, radius: int, color: str) -> None:
         """Draw a debug dot on the page overlay canvas."""
-        if not self._debug_initialized:
-            await self._tab._execute_command(RuntimeCommands.evaluate(self._DEBUG_INIT_JS))
-            self._debug_initialized = True
-
-        script = self._DEBUG_DOT_JS.format(
-            x=int(round(x)), y=int(round(y)), radius=radius, color=color
-        )
-        await self._tab._execute_command(RuntimeCommands.evaluate(script))
+        pass
 
 
 MouseAPI = Mouse

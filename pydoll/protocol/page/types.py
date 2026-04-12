@@ -831,12 +831,12 @@ class ScreenshotFormat(str, Enum):
     @classmethod
     def has_value(cls, value: str) -> bool:
         """Check if value is a valid screenshot format."""
-        return value in cls._value2member_map_
+        pass
 
     @classmethod
     def get_value(cls, value: str) -> 'ScreenshotFormat':
         """Get the value of the screenshot format."""
-        return cls(value)
+        pass
 
 
 class ScreencastFormat(str, Enum):

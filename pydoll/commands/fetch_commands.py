@@ -86,18 +86,7 @@ class FetchCommands:
         Returns:
             Command[Response]: A command for continuing the fetch request.
         """
-        params = ContinueRequestParams(requestId=request_id)
-        if url is not None:
-            params['url'] = url
-        if method is not None:
-            params['method'] = method
-        if post_data is not None:
-            params['postData'] = post_data
-        if headers is not None:
-            params['headers'] = headers
-        if intercept_response is not None:
-            params['interceptResponse'] = intercept_response
-        return Command(method=FetchMethod.CONTINUE_REQUEST, params=params)
+        pass
 
     @staticmethod
     def continue_request_with_auth(
@@ -126,17 +115,7 @@ class FetchCommands:
             Command[Response]: A command for continuing the fetch request with
                 authentication.
         """
-        auth_challenge_response_dict = AuthChallengeResponse(response=auth_challenge_response)
-        if proxy_username is not None:
-            auth_challenge_response_dict['username'] = proxy_username
-        if proxy_password is not None:
-            auth_challenge_response_dict['password'] = proxy_password
-
-        params = ContinueWithAuthParams(
-            requestId=request_id,
-            authChallengeResponse=auth_challenge_response_dict,
-        )
-        return Command(method=FetchMethod.CONTINUE_WITH_AUTH, params=params)
+        pass
 
     @staticmethod
     def disable() -> DisableCommand:
@@ -200,8 +179,7 @@ class FetchCommands:
         Returns:
             Command[Response]: A command for failing the fetch request.
         """
-        params = FailRequestParams(requestId=request_id, errorReason=error_reason)
-        return Command(method=FetchMethod.FAIL_REQUEST, params=params)
+        pass
 
     @staticmethod
     def fulfill_request(
@@ -229,17 +207,7 @@ class FetchCommands:
         Returns:
             Command[Response]: A command for fulfilling the fetch request.
         """
-        params = FulfillRequestParams(
-            requestId=request_id,
-            responseCode=response_code,
-        )
-        if response_headers is not None:
-            params['responseHeaders'] = response_headers
-        if body is not None:
-            params['body'] = body
-        if response_phrase is not None:
-            params['responsePhrase'] = response_phrase
-        return Command(method=FetchMethod.FULFILL_REQUEST, params=params)
+        pass
 
     @staticmethod
     def get_response_body(request_id: str) -> GetResponseBodyCommand:
@@ -256,8 +224,7 @@ class FetchCommands:
         Returns:
             Command[GetResponseBodyResponse]: A command for getting the response body.
         """
-        params = GetResponseBodyParams(requestId=request_id)
-        return Command(method=FetchMethod.GET_RESPONSE_BODY, params=params)
+        pass
 
     @staticmethod
     def continue_response(
@@ -287,14 +254,7 @@ class FetchCommands:
         Returns:
             Command[Response]: A command for continuing the fetch response.
         """
-        params = ContinueResponseParams(requestId=request_id)
-        if response_code is not None:
-            params['responseCode'] = response_code
-        if response_headers is not None:
-            params['responseHeaders'] = response_headers
-        if response_phrase is not None:
-            params['responsePhrase'] = response_phrase
-        return Command(method=FetchMethod.CONTINUE_RESPONSE, params=params)
+        pass
 
     @staticmethod
     def take_response_body_as_stream(
@@ -314,5 +274,4 @@ class FetchCommands:
             Command[TakeResponseBodyAsStreamResponse]: A command for taking the response
                 body as a stream.
         """
-        params = TakeResponseBodyAsStreamParams(requestId=request_id)
-        return Command(method=FetchMethod.TAKE_RESPONSE_BODY_AS_STREAM, params=params)
+        pass

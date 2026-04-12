@@ -163,7 +163,7 @@ class PageCommands:
         """
         Brings the page to front.
         """
-        return Command(method=PageMethod.BRING_TO_FRONT)
+        pass
 
     @staticmethod
     def capture_screenshot(
@@ -188,21 +188,7 @@ class PageCommands:
         Returns:
             CaptureScreenshotCommand: Command object with base64-encoded image data.
         """
-        params = CaptureScreenshotParams()
-        if format is not None:
-            params['format'] = format
-        if quality is not None:
-            params['quality'] = quality
-        if clip is not None:
-            params['clip'] = clip
-        if from_surface is not None:
-            params['fromSurface'] = from_surface
-        if capture_beyond_viewport is not None:
-            params['captureBeyondViewport'] = capture_beyond_viewport
-        if optimize_for_speed is not None:
-            params['optimizeForSpeed'] = optimize_for_speed
-
-        return Command(method=PageMethod.CAPTURE_SCREENSHOT, params=params)
+        pass
 
     @staticmethod
     def close() -> CloseCommand:
@@ -231,13 +217,7 @@ class PageCommands:
         Returns:
             CreateIsolatedWorldCommand: Command object with the execution context ID.
         """
-        params = CreateIsolatedWorldParams(frameId=frame_id)
-        if world_name is not None:
-            params['worldName'] = world_name
-        if grant_universal_access is not None:
-            params['grantUniveralAccess'] = grant_universal_access
-
-        return Command(method=PageMethod.CREATE_ISOLATED_WORLD, params=params)
+        pass
 
     @staticmethod
     def disable() -> DisableCommand:
@@ -279,10 +259,7 @@ class PageCommands:
         Returns:
             GetAppManifestCommand: Command object with manifest information.
         """
-        params = GetAppManifestParams()
-        if manifest_id is not None:
-            params['manifestId'] = manifest_id
-        return Command(method=PageMethod.GET_APP_MANIFEST, params=params)
+        pass
 
     @staticmethod
     def get_frame_tree() -> GetFrameTreeCommand:
@@ -292,7 +269,7 @@ class PageCommands:
         Returns:
             GetFrameTreeCommand: Command object with frame tree information.
         """
-        return Command(method=PageMethod.GET_FRAME_TREE)
+        pass
 
     @staticmethod
     def get_layout_metrics() -> GetLayoutMetricsCommand:
@@ -302,7 +279,7 @@ class PageCommands:
         Returns:
             GetLayoutMetricsCommand: Command object with layout metrics.
         """
-        return Command(method=PageMethod.GET_LAYOUT_METRICS)
+        pass
 
     @staticmethod
     def get_navigation_history() -> GetNavigationHistoryCommand:
@@ -312,7 +289,7 @@ class PageCommands:
         Returns:
             GetNavigationHistoryCommand: Command object with navigation history.
         """
-        return Command(method=PageMethod.GET_NAVIGATION_HISTORY)
+        pass
 
     @staticmethod
     def handle_javascript_dialog(
@@ -328,11 +305,7 @@ class PageCommands:
         Returns:
             HandleJavaScriptDialogCommand: Command object to handle a JavaScript dialog.
         """
-        params = HandleJavaScriptDialogParams(accept=accept)
-        if prompt_text is not None:
-            params['promptText'] = prompt_text
-
-        return Command(method=PageMethod.HANDLE_JAVASCRIPT_DIALOG, params=params)
+        pass
 
     @staticmethod
     def navigate(
@@ -355,17 +328,7 @@ class PageCommands:
         Returns:
             NavigateCommand: Command object to navigate to a URL.
         """
-        params = NavigateParams(url=url)
-        if referrer is not None:
-            params['referrer'] = referrer
-        if transition_type is not None:
-            params['transitionType'] = transition_type
-        if frame_id is not None:
-            params['frameId'] = frame_id
-        if referrer_policy is not None:
-            params['referrerPolicy'] = referrer_policy
-
-        return Command(method=PageMethod.NAVIGATE, params=params)
+        pass
 
     @staticmethod
     def navigate_to_history_entry(entry_id: int) -> NavigateToHistoryEntryCommand:
@@ -378,8 +341,7 @@ class PageCommands:
         Returns:
             NavigateToHistoryEntryCommand: Command object to navigate to a history entry.
         """
-        params = NavigateToHistoryEntryParams(entryId=entry_id)
-        return Command(method=PageMethod.NAVIGATE_TO_HISTORY_ENTRY, params=params)
+        pass
 
     @staticmethod
     def print_to_pdf(  # noqa: PLR0912
@@ -424,43 +386,7 @@ class PageCommands:
         Returns:
             PrintToPDFCommand: Command object to print the page to PDF.
         """
-        params = PrintToPDFParams()
-        if landscape is not None:
-            params['landscape'] = landscape
-        if display_header_footer is not None:
-            params['displayHeaderFooter'] = display_header_footer
-        if print_background is not None:
-            params['printBackground'] = print_background
-        if scale is not None:
-            params['scale'] = scale
-        if paper_width is not None:
-            params['paperWidth'] = paper_width
-        if paper_height is not None:
-            params['paperHeight'] = paper_height
-        if margin_top is not None:
-            params['marginTop'] = margin_top
-        if margin_bottom is not None:
-            params['marginBottom'] = margin_bottom
-        if margin_left is not None:
-            params['marginLeft'] = margin_left
-        if margin_right is not None:
-            params['marginRight'] = margin_right
-        if page_ranges is not None:
-            params['pageRanges'] = page_ranges
-        if header_template is not None:
-            params['headerTemplate'] = header_template
-        if footer_template is not None:
-            params['footerTemplate'] = footer_template
-        if prefer_css_page_size is not None:
-            params['preferCSSPageSize'] = prefer_css_page_size
-        if transfer_mode is not None:
-            params['transferMode'] = transfer_mode
-        if generate_tagged_pdf is not None:
-            params['generateTaggedPDF'] = generate_tagged_pdf
-        if generate_document_outline is not None:
-            params['generateDocumentOutline'] = generate_document_outline
-
-        return Command(method=PageMethod.PRINT_TO_PDF, params=params)
+        pass
 
     @staticmethod
     def reload(
@@ -478,22 +404,14 @@ class PageCommands:
         Returns:
             ReloadCommand: Command object to reload the page.
         """
-        params = ReloadParams()
-        if ignore_cache is not None:
-            params['ignoreCache'] = ignore_cache
-        if script_to_evaluate_on_load is not None:
-            params['scriptToEvaluateOnLoad'] = script_to_evaluate_on_load
-        if loader_id is not None:
-            params['loaderId'] = loader_id
-
-        return Command(method=PageMethod.RELOAD, params=params)
+        pass
 
     @staticmethod
     def reset_navigation_history() -> ResetNavigationHistoryCommand:
         """
         Creates a command to reset the navigation history.
         """
-        return Command(method=PageMethod.RESET_NAVIGATION_HISTORY)
+        pass
 
     @staticmethod
     def remove_script_to_evaluate_on_new_document(
@@ -508,8 +426,7 @@ class PageCommands:
         Returns:
             RemoveScriptToEvaluateOnNewDocumentCommand: Command object to remove a script.
         """
-        params = RemoveScriptToEvaluateOnNewDocumentParams(identifier=identifier)
-        return Command(method=PageMethod.REMOVE_SCRIPT_TO_EVALUATE_ON_NEW_DOCUMENT, params=params)
+        pass
 
     @staticmethod
     def set_bypass_csp(enabled: bool) -> SetBypassCSPCommand:
@@ -522,8 +439,7 @@ class PageCommands:
         Returns:
             SetBypassCSPCommand: Command object to toggle bypassing page CSP.
         """
-        params = SetBypassCSPParams(enabled=enabled)
-        return Command(method=PageMethod.SET_BYPASS_CSP, params=params)
+        pass
 
     @staticmethod
     def set_document_content(frame_id: str, html: str) -> SetDocumentContentCommand:
@@ -537,8 +453,7 @@ class PageCommands:
         Returns:
             SetDocumentContentCommand: Command object to set the document content.
         """
-        params = SetDocumentContentParams(frameId=frame_id, html=html)
-        return Command(method=PageMethod.SET_DOCUMENT_CONTENT, params=params)
+        pass
 
     @staticmethod
     def set_intercept_file_chooser_dialog(enabled: bool) -> SetInterceptFileChooserDialogCommand:
@@ -552,8 +467,7 @@ class PageCommands:
             SetInterceptFileChooserDialogCommand: Command object to set file chooser dialog
                 interception.
         """
-        params = SetInterceptFileChooserDialogParams(enabled=enabled)
-        return Command(method=PageMethod.SET_INTERCEPT_FILE_CHOOSER_DIALOG, params=params)
+        pass
 
     @staticmethod
     def set_lifecycle_events_enabled(enabled: bool) -> SetLifecycleEventsEnabledCommand:
@@ -566,8 +480,7 @@ class PageCommands:
         Returns:
             SetLifecycleEventsEnabledCommand: Command object to enable/disable lifecycle events.
         """
-        params = SetLifecycleEventsEnabledParams(enabled=enabled)
-        return Command(method=PageMethod.SET_LIFECYCLE_EVENTS_ENABLED, params=params)
+        pass
 
     @staticmethod
     def stop_loading() -> StopLoadingCommand:
@@ -577,7 +490,7 @@ class PageCommands:
         Returns:
             StopLoadingCommand: Command object to stop loading the page.
         """
-        return Command(method=PageMethod.STOP_LOADING)
+        pass
 
     @staticmethod
     def add_compilation_cache(url: str, data: str) -> AddCompilationCacheCommand:
@@ -593,8 +506,7 @@ class PageCommands:
         Returns:
             AddCompilationCacheCommand: Command object to add a compilation cache entry.
         """
-        params = AddCompilationCacheParams(url=url, data=data)
-        return Command(method=PageMethod.ADD_COMPILATION_CACHE, params=params)
+        pass
 
     @staticmethod
     def capture_snapshot(
@@ -611,22 +523,21 @@ class PageCommands:
         Returns:
             CaptureSnapshotCommand: Command object to capture a snapshot.
         """
-        params = CaptureSnapshotParams(format=format)
-        return Command(method=PageMethod.CAPTURE_SNAPSHOT, params=params)
+        pass
 
     @staticmethod
     def clear_compilation_cache() -> ClearCompilationCacheCommand:
         """
         Creates a command to clear the compilation cache.
         """
-        return Command(method=PageMethod.CLEAR_COMPILATION_CACHE)
+        pass
 
     @staticmethod
     def crash() -> CrashCommand:
         """
         Creates a command to crash the page.
         """
-        return Command(method=PageMethod.CRASH)
+        pass
 
     @staticmethod
     def generate_test_report(
@@ -644,10 +555,7 @@ class PageCommands:
         Returns:
             GenerateTestReportCommand: Command object to generate a test report.
         """
-        params = GenerateTestReportParams(message=message)
-        if group is not None:
-            params['group'] = group
-        return Command(method=PageMethod.GENERATE_TEST_REPORT, params=params)
+        pass
 
     @staticmethod
     def get_ad_script_ancestry_ids(
@@ -664,8 +572,7 @@ class PageCommands:
         Returns:
             GetAdScriptAncestryIdsCommand: Command object to get ad script ancestry IDs.
         """
-        params = GetAdScriptAncestryIdsParams(frameId=frame_id)
-        return Command(method=PageMethod.GET_AD_SCRIPT_ANCESTRY_IDS, params=params)
+        pass
 
     @staticmethod
     def get_app_id(
@@ -683,19 +590,14 @@ class PageCommands:
         Returns:
             GetAppIdCommand: Command object to get the app ID.
         """
-        params = GetAppIdParams()
-        if app_id is not None:
-            params['appId'] = app_id
-        if recommended_id is not None:
-            params['recommendedId'] = recommended_id
-        return Command(method=PageMethod.GET_APP_ID, params=params)
+        pass
 
     @staticmethod
     def get_installability_errors() -> GetInstallabilityErrorsCommand:
         """
         Creates a command to get the installability errors.
         """
-        return Command(method=PageMethod.GET_INSTALLABILITY_ERRORS)
+        pass
 
     @staticmethod
     def get_origin_trials(frame_id: str) -> GetOriginTrialsCommand:
@@ -710,8 +612,7 @@ class PageCommands:
         Returns:
             GetOriginTrialsCommand: Command object to get origin trials.
         """
-        params = GetOriginTrialsParams(frameId=frame_id)
-        return Command(method=PageMethod.GET_ORIGIN_TRIALS, params=params)
+        pass
 
     @staticmethod
     def get_permissions_policy_state(
@@ -720,8 +621,7 @@ class PageCommands:
         """
         Creates a command to get the permissions policy state.
         """
-        params = GetPermissionsPolicyStateParams(frameId=frame_id)
-        return Command(method=PageMethod.GET_PERMISSIONS_POLICY_STATE, params=params)
+        pass
 
     @staticmethod
     def get_resource_content(
@@ -731,15 +631,14 @@ class PageCommands:
         """
         Creates a command to get the resource content.
         """
-        params = GetResourceContentParams(frameId=frame_id, url=url)
-        return Command(method=PageMethod.GET_RESOURCE_CONTENT, params=params)
+        pass
 
     @staticmethod
     def get_resource_tree() -> GetResourceTreeCommand:
         """
         Creates a command to get the resource tree.
         """
-        return Command(method=PageMethod.GET_RESOURCE_TREE)
+        pass
 
     @staticmethod
     def produce_compilation_cache(
@@ -748,8 +647,7 @@ class PageCommands:
         """
         Creates a command to produce a compilation cache entry.
         """
-        params = ProduceCompilationCacheParams(scripts=scripts)
-        return Command(method=PageMethod.PRODUCE_COMPILATION_CACHE, params=params)
+        pass
 
     @staticmethod
     def screencast_frame_ack(
@@ -758,8 +656,7 @@ class PageCommands:
         """
         Creates a command to acknowledge a screencast frame.
         """
-        params = ScreencastFrameAckParams(sessionId=session_id)
-        return Command(method=PageMethod.SCREENCAST_FRAME_ACK, params=params)
+        pass
 
     @staticmethod
     def search_in_resource(
@@ -772,12 +669,7 @@ class PageCommands:
         """
         Creates a command to search for a string in a resource.
         """
-        params = SearchInResourceParams(frameId=frame_id, url=url, query=query)
-        if case_sensitive is not None:
-            params['caseSensitive'] = case_sensitive
-        if is_regex is not None:
-            params['isRegex'] = is_regex
-        return Command(method=PageMethod.SEARCH_IN_RESOURCE, params=params)
+        pass
 
     @staticmethod
     def set_ad_blocking_enabled(
@@ -786,8 +678,7 @@ class PageCommands:
         """
         Creates a command to set ad blocking enabled.
         """
-        params = SetAdBlockingEnabledParams(enabled=enabled)
-        return Command(method=PageMethod.SET_AD_BLOCKING_ENABLED, params=params)
+        pass
 
     @staticmethod
     def set_font_families(
@@ -797,8 +688,7 @@ class PageCommands:
         """
         Creates a command to set font families.
         """
-        params = SetFontFamiliesParams(fontFamilies=font_families, forScripts=for_scripts)
-        return Command(method=PageMethod.SET_FONT_FAMILIES, params=params)
+        pass
 
     @staticmethod
     def set_font_sizes(
@@ -807,8 +697,7 @@ class PageCommands:
         """
         Creates a command to set font sizes.
         """
-        params = SetFontSizesParams(fontSizes=font_sizes)
-        return Command(method=PageMethod.SET_FONT_SIZES, params=params)
+        pass
 
     @staticmethod
     def set_prerendering_allowed(
@@ -817,8 +706,7 @@ class PageCommands:
         """
         Creates a command to set prerendering allowed.
         """
-        params = SetPrerenderingAllowedParams(isAllowed=is_allowed)
-        return Command(method=PageMethod.SET_PRERENDERING_ALLOWED, params=params)
+        pass
 
     @staticmethod
     def set_rph_registration_mode(
@@ -827,8 +715,7 @@ class PageCommands:
         """
         Creates a command to set the RPH registration mode.
         """
-        params = SetRPHRegistrationModeParams(mode=mode)
-        return Command(method=PageMethod.SET_RPH_REGISTRATION_MODE, params=params)
+        pass
 
     @staticmethod
     def set_spc_transaction_mode(
@@ -837,8 +724,7 @@ class PageCommands:
         """
         Creates a command to set the SPC transaction mode.
         """
-        params = SetSPCTransactionModeParams(mode=mode)
-        return Command(method=PageMethod.SET_SPC_TRANSACTION_MODE, params=params)
+        pass
 
     @staticmethod
     def set_web_lifecycle_state(
@@ -847,8 +733,7 @@ class PageCommands:
         """
         Creates a command to set the web lifecycle state.
         """
-        params = SetWebLifecycleStateParams(state=state)
-        return Command(method=PageMethod.SET_WEB_LIFECYCLE_STATE, params=params)
+        pass
 
     @staticmethod
     def start_screencast(
@@ -861,27 +746,18 @@ class PageCommands:
         """
         Creates a command to start a screencast.
         """
-        params = StartScreencastParams(format=format)
-        if quality is not None:
-            params['quality'] = quality
-        if max_width is not None:
-            params['maxWidth'] = max_width
-        if max_height is not None:
-            params['maxHeight'] = max_height
-        if every_nth_frame is not None:
-            params['everyNthFrame'] = every_nth_frame
-        return Command(method=PageMethod.START_SCREENCAST, params=params)
+        pass
 
     @staticmethod
     def stop_screencast() -> StopScreencastCommand:
         """
         Creates a command to stop a screencast.
         """
-        return Command(method=PageMethod.STOP_SCREENCAST)
+        pass
 
     @staticmethod
     def wait_for_debugger() -> WaitForDebuggerCommand:
         """
         Creates a command to wait for a debugger.
         """
-        return Command(method=PageMethod.WAIT_FOR_DEBUGGER)
+        pass

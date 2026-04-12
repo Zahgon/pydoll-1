@@ -54,19 +54,7 @@ class TempDirectoryManager:
         Raises:
             PermissionError: If operation fails after all retries.
         """
-        retry_time = 0
-        while retry_times < 0 or retry_time < retry_times:
-            retry_time += 1
-            try:
-                func(path)
-                break
-            except PermissionError:
-                time.sleep(0.1)
-                logger.debug(
-                    f'Retrying file operation due to PermissionError (attempt {retry_time})'
-                )
-        else:
-            raise PermissionError()
+        pass
 
     def handle_cleanup_error(self, func: Callable[[str], None], path: str, exc_info: tuple):
         """
@@ -80,47 +68,7 @@ class TempDirectoryManager:
         Note:
             Handles Chromium-specific locked files like CrashpadMetrics.
         """
-        matches = ['CrashpadMetrics-active.pma']
-        match_substrings = ['Safe Browsing', 'Safe Browsing Cookies']
-        # Extra patterns commonly locked on Windows; compare case-insensitively
-        windows_locked_substrings = [
-            '\\cache\\',
-            '/cache/',
-            'no_vary_search',
-            'journal.baj',
-            '\\network\\cookies',
-            '/network/cookies',
-            'cookies-journal',
-            '\\local storage\\',
-            '/local storage/',
-            '\\local storage\\leveldb\\',
-            '/local storage/leveldb/',
-            'leveldb',
-            'indexeddb',
-        ]
-        exc_type, exc_value, _ = exc_info
-
-        if exc_type is PermissionError:
-            filename = Path(path).name
-            # Known Chromium files that may remain locked briefly on Windows
-            path_lc = path.lower()
-            windows_match = os.name == 'nt' and any(
-                substr in path_lc for substr in windows_locked_substrings
-            )
-            if (
-                filename in matches
-                or any(substr in path for substr in match_substrings)
-                or windows_match
-            ):
-                try:
-                    self.retry_process_file(func, path)
-                    return
-                except PermissionError:
-                    logger.warning(f'Ignoring locked Chrome file during cleanup: {path}')
-                    return
-        elif exc_type is OSError:
-            return
-        raise exc_value
+        pass
 
     def cleanup(self):
         """

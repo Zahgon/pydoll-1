@@ -74,11 +74,7 @@ class RuntimeCommands:
         Returns:
             AddBindingCommand: Command object to add a JavaScript binding.
         """
-        params = AddBindingParams(name=name)
-        if execution_context_name is not None:
-            params['executionContextName'] = execution_context_name
-
-        return Command(method=RuntimeMethod.ADD_BINDING, params=params)
+        pass
 
     @staticmethod
     def await_promise(
@@ -98,13 +94,7 @@ class RuntimeCommands:
         Returns:
             AwaitPromiseCommand: Command object to await a promise.
         """
-        params = AwaitPromiseParams(promiseObjectId=promise_object_id)
-        if return_by_value is not None:
-            params['returnByValue'] = return_by_value
-        if generate_preview is not None:
-            params['generatePreview'] = generate_preview
-
-        return Command(method=RuntimeMethod.AWAIT_PROMISE, params=params)
+        pass
 
     @staticmethod
     def call_function_on(
@@ -195,13 +185,7 @@ class RuntimeCommands:
         Returns:
             CompileScriptCommand: Command object to compile a script.
         """
-        params = CompileScriptParams(
-            expression=expression, sourceURL=source_url, persistScript=persist_script
-        )
-        if execution_context_id is not None:
-            params['executionContextId'] = execution_context_id
-
-        return Command(method=RuntimeMethod.COMPILE_SCRIPT, params=params)
+        pass
 
     @staticmethod
     def disable() -> DisableCommand:
@@ -325,17 +309,7 @@ class RuntimeCommands:
         Returns:
             GetPropertiesCommand: Command object to get object properties.
         """
-        params = GetPropertiesParams(objectId=object_id)
-        if own_properties is not None:
-            params['ownProperties'] = own_properties
-        if accessor_properties_only is not None:
-            params['accessorPropertiesOnly'] = accessor_properties_only
-        if generate_preview is not None:
-            params['generatePreview'] = generate_preview
-        if non_indexed_properties_only is not None:
-            params['nonIndexedPropertiesOnly'] = non_indexed_properties_only
-
-        return Command(method=RuntimeMethod.GET_PROPERTIES, params=params)
+        pass
 
     @staticmethod
     def global_lexical_scope_names(
@@ -352,11 +326,7 @@ class RuntimeCommands:
             GlobalLexicalScopeNamesCommand: Command object to get global lexical
                 scope names.
         """
-        params = GlobalLexicalScopeNamesParams()
-        if execution_context_id is not None:
-            params['executionContextId'] = execution_context_id
-
-        return Command(method=RuntimeMethod.GLOBAL_LEXICAL_SCOPE_NAMES, params=params)
+        pass
 
     @staticmethod
     def query_objects(
@@ -373,11 +343,7 @@ class RuntimeCommands:
         Returns:
             QueryObjectsCommand: Command object to query objects.
         """
-        params = QueryObjectsParams(prototypeObjectId=prototype_object_id)
-        if object_group is not None:
-            params['objectGroup'] = object_group
-
-        return Command(method=RuntimeMethod.QUERY_OBJECTS, params=params)
+        pass
 
     @staticmethod
     def release_object(
@@ -392,9 +358,7 @@ class RuntimeCommands:
         Returns:
             ReleaseObjectCommand: Command object to release an object.
         """
-        params = ReleaseObjectParams(objectId=object_id)
-
-        return Command(method=RuntimeMethod.RELEASE_OBJECT, params=params)
+        pass
 
     @staticmethod
     def release_object_group(
@@ -409,8 +373,7 @@ class RuntimeCommands:
         Returns:
             ReleaseObjectGroupCommand: Command object to release an object group.
         """
-        params = ReleaseObjectGroupParams(objectGroup=object_group)
-        return Command(method=RuntimeMethod.RELEASE_OBJECT_GROUP, params=params)
+        pass
 
     @staticmethod
     def remove_binding(
@@ -425,8 +388,7 @@ class RuntimeCommands:
         Returns:
             RemoveBindingCommand: Command object to remove a JavaScript binding.
         """
-        params = RemoveBindingParams(name=name)
-        return Command(method=RuntimeMethod.REMOVE_BINDING, params=params)
+        pass
 
     @staticmethod
     def run_script(
@@ -456,23 +418,7 @@ class RuntimeCommands:
         Returns:
             RunScriptCommand: Command object to run a script.
         """
-        params = RunScriptParams(scriptId=script_id)
-        if execution_context_id is not None:
-            params['executionContextId'] = execution_context_id
-        if object_group is not None:
-            params['objectGroup'] = object_group
-        if silent is not None:
-            params['silent'] = silent
-        if include_command_line_api is not None:
-            params['includeCommandLineAPI'] = include_command_line_api
-        if return_by_value is not None:
-            params['returnByValue'] = return_by_value
-        if generate_preview is not None:
-            params['generatePreview'] = generate_preview
-        if await_promise is not None:
-            params['awaitPromise'] = await_promise
-
-        return Command(method=RuntimeMethod.RUN_SCRIPT, params=params)
+        pass
 
     @staticmethod
     def set_async_call_stack_depth(
@@ -487,8 +433,7 @@ class RuntimeCommands:
         Returns:
             SetAsyncCallStackDepthCommand: Command object to set async call stack depth.
         """
-        params = SetAsyncCallStackDepthParams(maxDepth=max_depth)
-        return Command(method=RuntimeMethod.SET_ASYNC_CALL_STACK_DEPTH, params=params)
+        pass
 
     @staticmethod
     def set_custom_object_formatter_enabled(
@@ -504,8 +449,7 @@ class RuntimeCommands:
             SetCustomObjectFormatterEnabledCommand: Command object to enable/disable custom
                 object formatters.
         """
-        params = SetCustomObjectFormatterEnabledParams(enabled=enabled)
-        return Command(method=RuntimeMethod.SET_CUSTOM_OBJECT_FORMATTER_ENABLED, params=params)
+        pass
 
     @staticmethod
     def set_max_call_stack_size_to_capture(
@@ -520,5 +464,4 @@ class RuntimeCommands:
         Returns:
             SetMaxCallStackSizeToCaptureCommand: Command object to set max call stack size.
         """
-        params = SetMaxCallStackSizeToCaptureParams(size=size)
-        return Command(method=RuntimeMethod.SET_MAX_CALL_STACK_SIZE_TO_CAPTURE, params=params)
+        pass

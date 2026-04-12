@@ -154,18 +154,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns detailed information about the requested node.
         """
-        params = DescribeNodeParams()
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_id is not None:
-            params['objectId'] = object_id
-        if depth:
-            params['depth'] = depth
-        if pierce is not None:
-            params['pierce'] = pierce
-        return Command(method=DomMethod.DESCRIBE_NODE, params=params)
+        pass
 
     @staticmethod
     def disable() -> DisableCommand:
@@ -225,14 +214,7 @@ class DomCommands:
         Returns:
             Command: CDP command to focus on the specified element.
         """
-        params = FocusParams()
-        if node_id:
-            params['nodeId'] = node_id
-        if backend_node_id:
-            params['backendNodeId'] = backend_node_id
-        if object_id:
-            params['objectId'] = object_id
-        return Command(method=DomMethod.FOCUS, params=params)
+        pass
 
     @staticmethod
     def get_attributes(node_id: int) -> GetAttributesCommand:
@@ -251,8 +233,7 @@ class DomCommands:
             Command: CDP command that returns an interleaved array of node attribute
                     names and values [name1, value1, name2, value2, ...].
         """
-        params = GetAttributesParams(nodeId=node_id)
-        return Command(method=DomMethod.GET_ATTRIBUTES, params=params)
+        pass
 
     @staticmethod
     def get_box_model(
@@ -277,14 +258,7 @@ class DomCommands:
             Command: CDP command that returns the box model for the node, including
                     coordinates for content, padding, border, and margin boxes.
         """
-        params = GetBoxModelParams()
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_id is not None:
-            params['objectId'] = object_id
-        return Command(method=DomMethod.GET_BOX_MODEL, params=params)
+        pass
 
     @staticmethod
     def get_document(
@@ -307,12 +281,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the root DOM node.
         """
-        params = GetDocumentParams()
-        if depth is not None:
-            params['depth'] = depth
-        if pierce is not None:
-            params['pierce'] = pierce
-        return Command(method=DomMethod.GET_DOCUMENT, params=params)
+        pass
 
     @staticmethod
     def get_node_for_location(
@@ -340,12 +309,7 @@ class DomCommands:
             Command: CDP command that returns the node at the given location, including
                    frame information when available.
         """
-        params = GetNodeForLocationParams(x=x, y=y)
-        if include_user_agent_shadow_dom is not None:
-            params['includeUserAgentShadowDOM'] = include_user_agent_shadow_dom
-        if ignore_pointer_events_none is not None:
-            params['ignorePointerEventsNone'] = ignore_pointer_events_none
-        return Command(method=DomMethod.GET_NODE_FOR_LOCATION, params=params)
+        pass
 
     @staticmethod
     def get_outer_html(
@@ -369,14 +333,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the outer HTML markup of the node.
         """
-        params = GetOuterHTMLParams()
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_id is not None:
-            params['objectId'] = object_id
-        return Command(method=DomMethod.GET_OUTER_HTML, params=params)
+        pass
 
     @staticmethod
     def hide_highlight() -> HideHighlightCommand:
@@ -390,7 +347,7 @@ class DomCommands:
         Returns:
             Command: CDP command to hide DOM element highlights.
         """
-        return Command(method=DomMethod.HIDE_HIGHLIGHT)
+        pass
 
     @staticmethod
     def highlight_node() -> HighlightNodeCommand:
@@ -403,7 +360,7 @@ class DomCommands:
         Returns:
             Command: CDP command to highlight a DOM node.
         """
-        return Command(method=DomMethod.HIGHLIGHT_NODE)
+        pass
 
     @staticmethod
     def highlight_rect() -> HighlightRectCommand:
@@ -417,7 +374,7 @@ class DomCommands:
         Returns:
             Command: CDP command to highlight a rectangular area.
         """
-        return Command(method=DomMethod.HIGHLIGHT_RECT)
+        pass
 
     @staticmethod
     def move_to(
@@ -441,10 +398,7 @@ class DomCommands:
         Returns:
             Command: CDP command to move a node, returning the new id of the moved node.
         """
-        params = MoveToParams(nodeId=node_id, targetNodeId=target_node_id)
-        if insert_before_node_id is not None:
-            params['insertBeforeNodeId'] = insert_before_node_id
-        return Command(method=DomMethod.MOVE_TO, params=params)
+        pass
 
     @staticmethod
     def query_selector(
@@ -466,8 +420,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the first element matching the selector.
         """
-        params = QuerySelectorParams(nodeId=node_id, selector=selector)
-        return Command(method=DomMethod.QUERY_SELECTOR, params=params)
+        pass
 
     @staticmethod
     def query_selector_all(
@@ -489,8 +442,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns all elements matching the selector.
         """
-        params = QuerySelectorAllParams(nodeId=node_id, selector=selector)
-        return Command(method=DomMethod.QUERY_SELECTOR_ALL, params=params)
+        pass
 
     @staticmethod
     def remove_attribute(
@@ -511,8 +463,7 @@ class DomCommands:
         Returns:
             Command: CDP command to remove the specified attribute.
         """
-        params = RemoveAttributeParams(nodeId=node_id, name=name)
-        return Command(method=DomMethod.REMOVE_ATTRIBUTE, params=params)
+        pass
 
     @staticmethod
     def remove_node(node_id: int) -> RemoveNodeCommand:
@@ -529,8 +480,7 @@ class DomCommands:
         Returns:
             Command: CDP command to remove the specified node.
         """
-        params = RemoveNodeParams(nodeId=node_id)
-        return Command(method=DomMethod.REMOVE_NODE, params=params)
+        pass
 
     @staticmethod
     def request_child_nodes(
@@ -554,12 +504,7 @@ class DomCommands:
         Returns:
             Command: CDP command to request child nodes.
         """
-        params = RequestChildNodesParams(nodeId=node_id)
-        if depth is not None:
-            params['depth'] = depth
-        if pierce is not None:
-            params['pierce'] = pierce
-        return Command(method=DomMethod.REQUEST_CHILD_NODES, params=params)
+        pass
 
     @staticmethod
     def request_node(
@@ -578,8 +523,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the Node id for the given object.
         """
-        params = RequestNodeParams(objectId=object_id)
-        return Command(method=DomMethod.REQUEST_NODE, params=params)
+        pass
 
     @staticmethod
     def resolve_node(
@@ -604,16 +548,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns a JavaScript object wrapper for the node.
         """
-        params = ResolveNodeParams()
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_group is not None:
-            params['objectGroup'] = object_group
-        if execution_context_id is not None:
-            params['executionContextId'] = execution_context_id
-        return Command(method=DomMethod.RESOLVE_NODE, params=params)
+        pass
 
     @staticmethod
     def scroll_into_view_if_needed(
@@ -639,16 +574,7 @@ class DomCommands:
         Returns:
             Command: CDP command to scroll the element into view.
         """
-        params = ScrollIntoViewIfNeededParams()
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_id is not None:
-            params['objectId'] = object_id
-        if rect is not None:
-            params['rect'] = rect
-        return Command(method=DomMethod.SCROLL_INTO_VIEW_IF_NEEDED, params=params)
+        pass
 
     @staticmethod
     def set_attributes_as_text(
@@ -672,10 +598,7 @@ class DomCommands:
         Returns:
             Command: CDP command to set an attribute as text.
         """
-        params = SetAttributesAsTextParams(nodeId=node_id, text=text)
-        if name is not None:
-            params['name'] = name
-        return Command(method=DomMethod.SET_ATTRIBUTES_AS_TEXT, params=params)
+        pass
 
     @staticmethod
     def set_attribute_value(
@@ -698,8 +621,7 @@ class DomCommands:
         Returns:
             Command: CDP command to set an attribute value.
         """
-        params = SetAttributeValueParams(nodeId=node_id, name=name, value=value)
-        return Command(method=DomMethod.SET_ATTRIBUTE_VALUE, params=params)
+        pass
 
     @staticmethod
     def set_file_input_files(
@@ -724,14 +646,7 @@ class DomCommands:
         Returns:
             Command: CDP command to set files for a file input element.
         """
-        params = SetFileInputFilesParams(files=files)
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_id is not None:
-            params['objectId'] = object_id
-        return Command(method=DomMethod.SET_FILE_INPUT_FILES, params=params)
+        pass
 
     @staticmethod
     def set_node_name(
@@ -752,8 +667,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the new node id after the name change.
         """
-        params = SetNodeNameParams(nodeId=node_id, name=name)
-        return Command(method=DomMethod.SET_NODE_NAME, params=params)
+        pass
 
     @staticmethod
     def set_node_value(
@@ -774,8 +688,7 @@ class DomCommands:
         Returns:
             Command: CDP command to set a node's value.
         """
-        params = SetNodeValueParams(nodeId=node_id, value=value)
-        return Command(method=DomMethod.SET_NODE_VALUE, params=params)
+        pass
 
     @staticmethod
     def set_outer_html(
@@ -797,8 +710,7 @@ class DomCommands:
         Returns:
             Command: CDP command to set the outer HTML of a node.
         """
-        params = SetOuterHTMLParams(nodeId=node_id, outerHTML=outer_html)
-        return Command(method=DomMethod.SET_OUTER_HTML, params=params)
+        pass
 
     @staticmethod
     def collect_class_names_from_subtree(
@@ -817,8 +729,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns a list of all unique class names in the subtree.
         """
-        params = CollectClassNamesFromSubtreeParams(nodeId=node_id)
-        return Command(method=DomMethod.COLLECT_CLASS_NAMES_FROM_SUBTREE, params=params)
+        pass
 
     @staticmethod
     def copy_to(
@@ -842,10 +753,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the id of the new copy.
         """
-        params = CopyToParams(nodeId=node_id, targetNodeId=target_node_id)
-        if insert_before_node_id is not None:
-            params['insertBeforeNodeId'] = insert_before_node_id
-        return Command(method=DomMethod.COPY_TO, params=params)
+        pass
 
     @staticmethod
     def discard_search_results(
@@ -863,8 +771,7 @@ class DomCommands:
         Returns:
             Command: CDP command to discard search results.
         """
-        params = DiscardSearchResultsParams(searchId=search_id)
-        return Command(method=DomMethod.DISCARD_SEARCH_RESULTS, params=params)
+        pass
 
     @staticmethod
     def get_anchor_element(
@@ -885,10 +792,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the anchor element node information.
         """
-        params = GetAnchorElementParams(nodeId=node_id)
-        if anchor_specifier is not None:
-            params['anchorSpecifier'] = anchor_specifier
-        return Command(method=DomMethod.GET_ANCHOR_ELEMENT, params=params)
+        pass
 
     @staticmethod
     def get_container_for_node(
@@ -915,16 +819,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns information about the containing element.
         """
-        params = GetContainerForNodeParams(nodeId=node_id)
-        if container_name is not None:
-            params['containerName'] = container_name
-        if physical_axes is not None:
-            params['physicalAxes'] = physical_axes
-        if logical_axes is not None:
-            params['logicalAxes'] = logical_axes
-        if queries_scroll_state is not None:
-            params['queriesScrollState'] = queries_scroll_state
-        return Command(method=DomMethod.GET_CONTAINER_FOR_NODE, params=params)
+        pass
 
     @staticmethod
     def get_content_quads(
@@ -947,14 +842,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the quads describing the node position.
         """
-        params = GetContentQuadsParams()
-        if node_id is not None:
-            params['nodeId'] = node_id
-        if backend_node_id is not None:
-            params['backendNodeId'] = backend_node_id
-        if object_id is not None:
-            params['objectId'] = object_id
-        return Command(method=DomMethod.GET_CONTENT_QUADS, params=params)
+        pass
 
     @staticmethod
     def get_detached_dom_nodes() -> GetDetachedDomNodesCommand:
@@ -968,7 +856,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns information about detached DOM nodes.
         """
-        return Command(method=DomMethod.GET_DETACHED_DOM_NODES)
+        pass
 
     @staticmethod
     def get_element_by_relation(
@@ -989,8 +877,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the related element node.
         """
-        params = GetElementByRelationParams(nodeId=node_id, relation=relation)
-        return Command(method=DomMethod.GET_ELEMENT_BY_RELATION, params=params)
+        pass
 
     @staticmethod
     def get_file_info(
@@ -1009,8 +896,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns file information.
         """
-        params = GetFileInfoParams(objectId=object_id)
-        return Command(method=DomMethod.GET_FILE_INFO, params=params)
+        pass
 
     @staticmethod
     def get_frame_owner(
@@ -1029,8 +915,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the frame owner element.
         """
-        params = GetFrameOwnerParams(frameId=frame_id)
-        return Command(method=DomMethod.GET_FRAME_OWNER, params=params)
+        pass
 
     @staticmethod
     def get_nodes_for_subtree_by_style(
@@ -1053,10 +938,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns nodes matching the specified styles.
         """
-        params = GetNodesForSubtreeByStyleParams(nodeId=node_id, computedStyles=computed_styles)
-        if pierce is not None:
-            params['pierce'] = pierce
-        return Command(method=DomMethod.GET_NODES_FOR_SUBTREE_BY_STYLE, params=params)
+        pass
 
     @staticmethod
     def get_node_stack_traces(
@@ -1075,8 +957,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns stack traces related to the node.
         """
-        params = GetNodeStackTracesParams(nodeId=node_id)
-        return Command(method=DomMethod.GET_NODE_STACK_TRACES, params=params)
+        pass
 
     @staticmethod
     def get_querying_descendants_for_container(
@@ -1095,8 +976,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns querying descendant information.
         """
-        params = GetQueryingDescendantsForContainerParams(nodeId=node_id)
-        return Command(method=DomMethod.GET_QUERYING_DESCENDANTS_FOR_CONTAINER, params=params)
+        pass
 
     @staticmethod
     def get_relayout_boundary(
@@ -1115,8 +995,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the relayout boundary node.
         """
-        params = GetRelayoutBoundaryParams(nodeId=node_id)
-        return Command(method=DomMethod.GET_RELAYOUT_BOUNDARY, params=params)
+        pass
 
     @staticmethod
     def get_search_results(
@@ -1139,8 +1018,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the requested search results.
         """
-        params = GetSearchResultsParams(searchId=search_id, fromIndex=from_index, toIndex=to_index)
-        return Command(method=DomMethod.GET_SEARCH_RESULTS, params=params)
+        pass
 
     @staticmethod
     def get_top_layer_elements() -> GetTopLayerElementsCommand:
@@ -1154,7 +1032,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the top layer element information.
         """
-        return Command(method=DomMethod.GET_TOP_LAYER_ELEMENTS)
+        pass
 
     @staticmethod
     def mark_undoable_state() -> MarkUndoableStateCommand:
@@ -1168,7 +1046,7 @@ class DomCommands:
         Returns:
             Command: CDP command to mark the current state as undoable.
         """
-        return Command(method=DomMethod.MARK_UNDOABLE_STATE)
+        pass
 
     @staticmethod
     def perform_search(
@@ -1189,10 +1067,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns search results identifier and count.
         """
-        params = PerformSearchParams(query=query)
-        if include_user_agent_shadow_dom is not None:
-            params['includeUserAgentShadowDOM'] = include_user_agent_shadow_dom
-        return Command(method=DomMethod.PERFORM_SEARCH, params=params)
+        pass
 
     @staticmethod
     def push_node_by_path_to_frontend(
@@ -1211,8 +1086,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns the node id for the node.
         """
-        params = PushNodeByPathToFrontendParams(path=path)
-        return Command(method=DomMethod.PUSH_NODE_BY_PATH_TO_FRONTEND, params=params)
+        pass
 
     @staticmethod
     def push_nodes_by_backend_ids_to_frontend(
@@ -1230,8 +1104,7 @@ class DomCommands:
         Returns:
             Command: CDP command that returns an array of node ids.
         """
-        params = PushNodesByBackendIdsToFrontendParams(backendNodeIds=backend_node_ids)
-        return Command(method=DomMethod.PUSH_NODES_BY_BACKEND_IDS_TO_FRONTEND, params=params)
+        pass
 
     @staticmethod
     def redo() -> RedoCommand:
@@ -1245,7 +1118,7 @@ class DomCommands:
         Returns:
             Command: CDP command to redo the last undone action.
         """
-        return Command(method=DomMethod.REDO)
+        pass
 
     @staticmethod
     def set_inspected_node(
@@ -1264,8 +1137,7 @@ class DomCommands:
         Returns:
             Command: CDP command to set the inspected node.
         """
-        params = SetInspectedNodeParams(nodeId=node_id)
-        return Command(method=DomMethod.SET_INSPECTED_NODE, params=params)
+        pass
 
     @staticmethod
     def set_node_stack_traces_enabled(
@@ -1284,8 +1156,7 @@ class DomCommands:
         Returns:
             Command: CDP command to enable or disable node stack traces.
         """
-        params = SetNodeStackTracesEnabledParams(enable=enable)
-        return Command(method=DomMethod.SET_NODE_STACK_TRACES_ENABLED, params=params)
+        pass
 
     @staticmethod
     def undo() -> UndoCommand:
@@ -1299,4 +1170,4 @@ class DomCommands:
         Returns:
             Command: CDP command to undo the last performed action.
         """
-        return Command(method=DomMethod.UNDO)
+        pass
